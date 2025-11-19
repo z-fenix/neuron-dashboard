@@ -2,14 +2,18 @@
   "name": "neuron-dashboard-src",
   "version": "0.1.0",
   "private": true,
+  "packageManager": "yarn@1.22.0+",
+  "config": {
+    "ignore-engines": true
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "dev:pc": "export VUE_APP_HOST=http://localhost:7003 && yarn serve",
     "dev:server": "export VUE_APP_HOST=ws://iot-platform.cloud:6170 && yarn serve",
     "dev:test": "export VUE_APP_HOST=http://124.70.166.104:7000 && yarn serve",
     "dev:en": "export VUE_APP_HOST=http://124.70.166.104:7000 && export VUE_APP_LANG_EN=true && yarn serve",
-    "build": "vue-cli-service build",
-    "build:en": "VUE_APP_LANG_EN=true vue-cli-service build",
+    "build": "NODE_OPTIONS=\"--openssl-legacy-provider\" vue-cli-service build",
+    "build:en": "NODE_OPTIONS=\"--openssl-legacy-provider\" VUE_APP_LANG_EN=true vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

@@ -242,7 +242,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
 
   const setDefaultTopic = () => {
     const nodeName = props.currentNode
-    subscriptionForm.value.topic = `/neuron/${nodeName}`
+    subscriptionForm.value.topic = `/device/${nodeName}`
   }
 
   const initForm = async () => {
