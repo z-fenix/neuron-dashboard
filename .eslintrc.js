@@ -9,17 +9,12 @@ module.exports = {
     'plugin:vue/base',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/typescript',
-    '@vue/prettier',
-    'prettier/@typescript-eslint',
+    'prettier', // Keep this one
     '@vue/typescript/recommended',
     'plugin:import/typescript',
   ],
   rules: {
     'import/extensions': 0,
-    // 'import/extensions': ['error', 'always', {
-    //   js: 'never',
-    //   vue: 'never',
-    // }],
     semi: 0,
     'max-len': [
       'off',
@@ -27,7 +22,6 @@ module.exports = {
         code: 120,
       },
     ],
-    // 'prettier/prettier': 'error',
     'no-console': 'off',
     'no-debugger': 'off',
     'vue/max-attributes-per-line': [
@@ -79,7 +73,4 @@ module.exports = {
     'import/no-dynamic-require': 'off',
   },
   ignorePatterns: ['dist', '/public/ekuiper'],
-  // parserOptions: {
-  //   parser: 'babel-eslint',
-  // },
 }

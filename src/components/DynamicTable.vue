@@ -108,6 +108,7 @@ import useLang from '@/composables/useLang'
 import useNodeConfigParamCommon from '@/composables/config/useNodeConfigParamCommon'
 import useNodeConfigParamItem from '@/composables/config/useNodeConfigParamItem'
 import { dataType } from '@/utils/utils'
+import type { FormItemRule } from 'element-plus'
 
 const props = defineProps({
   modelValue: { type: Array as PropType<Record<string, any>[]>, default: () => [] },
@@ -221,7 +222,7 @@ const getRules = (field: ParamInfo) => {
     paramKey: key,
     paramInfo: field,
   })
-  return rules.value
+   return rules.value as FormItemRule[]
 }
 
 const validate = async () => {

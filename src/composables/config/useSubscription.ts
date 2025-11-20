@@ -268,11 +268,13 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
       nodeGroups.forEach(([key, value]) => {
         const driver = key
         const groupLen = value.length
+        const params = {}
         if (groupLen) {
           value.forEach((group) => {
             let item: Omit<SubscriptionData, 'app'> = {
               driver,
               group,
+              params
             }
             if (isMQTTPugin.value) {
               item = { ...item, params: { topic } }
@@ -300,7 +302,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
       isSubmitting.value = true
 
       const { driver, group } = subscriptionForm.value
-      const data: SubscriptionData = { app: props.currentNode, driver, group }
+      const data: SubscriptionData = { app: props.currentNode, driver, group, params: {} }
 
       if (isSupportBatchSub.value) {
         await batchAddSubscriptions()

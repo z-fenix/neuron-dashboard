@@ -22,14 +22,14 @@
           v-model.number="inputValue"
           :placeholder="String(defaultData[paramKey] || '')"
         />
-        <el-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey])" />
+        <el-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey] || '')" />
       </span>
 
       <!-- String -->
       <el-input
         v-else-if="paramInfo.type === TypeOfPluginParam.String"
         v-model.trim="inputValue"
-        :placeholder="String(defaultData[paramKey])"
+        :placeholder="String(defaultData[paramKey] || '')"
       />
       <!-- Boolean -->
       <el-radio-group v-else-if="paramInfo.type === TypeOfPluginParam.Boolean" v-model="inputValue">
@@ -46,7 +46,7 @@
         </el-button>
         <div class="file-content-preview" v-if="inputValue">
           <label>Content-MD5:</label>
-          <span>{{ fileContentPreview(inputValue) }}</span>
+          <span>{{ fileContentPreview(String(inputValue)) }}</span>
         </div>
       </div>
       <!-- Enum -->
@@ -72,7 +72,7 @@
       <template v-else-if="paramInfo.type === TypeOfPluginParam.Array">
         <DynamicTable
           ref="arrayRef"
-          v-model="inputValue"
+          v-model="arrayValue"
           :fields="paramInfo.fields"
           :range="{ min: paramInfo?.valid?.min_length, max: paramInfo?.valid?.max_length }"
           @validateFileds="validateFileds"
@@ -97,25 +97,19 @@ import type { ParamInfo } from '@/types/config'
 import { FileType, TypeOfPluginParam } from '@/types/enums'
 import DynamicTable from '@/components/DynamicTable.vue'
 
-const props = defineProps({
-  modelValue: {
-    type: [Number, String, Boolean, Array],
-  },
-  paramKey: {
-    type: String,
-    required: true,
-  },
-  paramInfo: {
-    type: Object as PropType<ParamInfo>,
-    required: true,
-  },
-  defaultData: {
-    type: Object,
-    required: true,
-  },
-})
+interface Props {
+  modelValue?: string | number | boolean | Record<string, any>[] | undefined
+  paramKey: string
+  paramInfo: ParamInfo
+  defaultData: Record<string, any>
+}
 
-const emit = defineEmits(['update:modelValue', 'validateFileds'])
+const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  'update:modelValue': [value: string | number | boolean | Record<string, any>[] | undefined]
+  validateFileds: [fields: string[]]
+}>()
 
 const { t } = useI18n()
 const { i18nContent } = useLang()
@@ -123,12 +117,22 @@ const { upperFirstLetter, showLabel, isParamHexadecimalBase } = useNodeConfigPar
 
 const arrayRef = ref()
 
-// if base is 16, show hexadecimal
+// 为 Array 类型创建单独的计算属性
+const arrayValue = computed({
+  get() {
+    return Array.isArray(props.modelValue) ? props.modelValue : []
+  },
+  set(value: Record<string, any>[]) {
+    emit('update:modelValue', value)
+  },
+})
+
+// 为非 Array 类型创建计算属性
 const inputValue = computed({
   get() {
     return props.modelValue
   },
-  set(value) {
+  set(value: string | number | boolean | undefined) {
     emit('update:modelValue', value)
   },
 })
@@ -137,7 +141,14 @@ const isFieldRequired = computed(() => {
   return props.paramInfo?.attribute === 'required'
 })
 
-const { rules } = useNodeConfigParamItem(props)
+// 修复 useNodeConfigParamItem 的调用
+const useNodeConfigParams = computed(() => ({
+  paramKey: props.paramKey,
+  paramInfo: props.paramInfo,
+  modelValue: props.modelValue as string | number | boolean | undefined,
+}))
+
+const { rules } = useNodeConfigParamItem(useNodeConfigParams.value)
 const { readFile } = useUploadFileAndRead()
 
 const handleUpload = async (file: any) => {
@@ -155,7 +166,9 @@ const clearFile = () => {
   inputValue.value = ''
 }
 
-const fileContentPreview = md5
+const fileContentPreview = (content: string) => {
+  return md5(content)
+}
 
 const validateFileds = () => {
   emit('validateFileds', [`${props.paramKey}`])
@@ -198,6 +211,9 @@ defineExpose({
   }
   .file-content-preview {
     font-size: 12px;
+    label {
+      margin-right: 8px;
+    }
   }
   .file-upload {
     display: inline-block;

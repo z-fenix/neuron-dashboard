@@ -53,7 +53,7 @@
           <el-form-item
             v-if="isAttrsIncludeStatic(row.attribute)"
             :prop="`tagList.${$index}.address`"
-            :rules="[{ required: false }, rules.address]"
+            :rules="[{ required: false }, rules.address[0]]"
           >
             <el-input v-model="row.address" />
           </el-form-item>

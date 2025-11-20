@@ -146,6 +146,7 @@ export const querySubscription = async (node: string): Promise<Array<Subscriptio
         return {
           ...item,
           app: node,
+          params: {}
         }
       }),
     )

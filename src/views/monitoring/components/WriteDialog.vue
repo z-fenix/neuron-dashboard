@@ -18,7 +18,7 @@
           </div>
         </template>
         <el-input
-          v-if="tag.type !== TagType.BOOL"
+          v-if="tag?.type !== TagType.BOOL"
           v-model="inputValue"
           :type="isBYTESType ? 'textarea' : 'text'"
           :placeholder="isBYTESType ? '[0,0,0,0]' : ''"

@@ -124,8 +124,8 @@ watch(
   () => store.state.lang,
   () => {
     nextTick(() => {
-      const keys = Object.keys(formState.formData)
-      keys.forEach((key: string) => {
+      const keys = Object.keys(formState.formData) as (keyof typeof formState.formData)[]
+      keys.forEach((key) => {
         const value = formState.formData[key]
         if (!value) {
           formRef.value.form?.clearValidate()

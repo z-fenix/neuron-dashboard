@@ -49,7 +49,7 @@ export interface SubscriptionData extends SubscriptionDataForm {
   app: string
   driver: string
   group: string
-  params?: {
+  params: {
     topic?: string | null
     productKey?: string | null
   }

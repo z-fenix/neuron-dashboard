@@ -95,52 +95,33 @@ export default (props: any) => {
     [WriteDataErrorCode.LessThanMinSafeInteger]: t('data.writeDataSafeMinimumError'),
     [WriteDataErrorCode.GreaterThanMaxSafeInteger]: t('data.writeDataSafeMaximumError'),
   }))
-  const validTagValue = async (rule: any, value: string, callback: any) => {
+  const validTagValue = (rule: any, value: string, callback: any) => {
     const { field } = rule
     const $index = field.split('.')[1]
     const tag: TagDataInTable = props?.data?.tagList ? props.data.tagList[$index] : props?.data
     const { type, attribute } = tag
 
-    try {
-      // not Static attribute, no value
-      const isStaticAttr = isAttrsIncludeTheValue(Number(attribute), TagAttributeType.Static)
-      if (!isStaticAttr) {
-        return callback()
-      }
+    // not Static attribute, no value
+    const isStaticAttr = isAttrsIncludeTheValue(Number(attribute), TagAttributeType.Static)
+    if (!isStaticAttr) {
+      return callback()
+    }
 
-      if (type) {
-        const trueValue = String(value)
-        // // when `decimal` = 0, all other types can be enter as `float`, excepet for `bit` type
-        // if (decimal !== undefined && decimal !== null && decimal === 0) {
-        //   await checkWriteData(type, trueValue)
-        //   return callback()
-        // }
+    if (type) {
+      const trueValue = String(value)
 
-        const checkValueRes = await Promise.allSettled([
-          // checkFloat.bind(null, trueValue)(), // when `decimal` need to be determind `decimal !== 0` , use it
-          checkWriteData(type, trueValue),
-        ])
-
-        const checkRes = checkValueRes.map((item: any) => item?.value || false)
-        if (!checkRes.includes(true)) {
-          const errorMsg = errorMsgMap.value(type)[Number('1') as keyof typeof errorMsgMap.value]
-          return callback(new Error(errorMsg))
-        }
-
-        // validate bytes value length; when `static` support `bytes` support, let comment go
-        // const bytesValue = JSON.parse(trueValue)
-        // if (type === TagType.BYTES && bytesValue.length > 128) {
-        //   // checkWriteData(bytes) has valid `value` is `Array`
-        //   return callback(new Error(t('data.arrayLengthError', { length: 128 })))
-        // }
-        return callback()
-      }
-
+      // 使用同步方式调用 checkWriteData
+      checkWriteData(type, trueValue)
+        .then(() => {
+          callback()
+        })
+        .catch((error: any) => {
+          const errorCode = error?.message || error
+          const errorMsg = errorMsgMap.value(type)[Number(errorCode) as keyof typeof errorMsgMap.value]
+          callback(new Error(errorMsg))
+        })
+    } else {
       callback()
-    } catch (error: any) {
-      const errorCode = error?.message || error
-      const errorMsg = errorMsgMap.value(type)[Number(errorCode) as keyof typeof errorMsgMap.value]
-      callback(new Error(errorMsg))
     }
   }
 
@@ -166,6 +147,7 @@ export default (props: any) => {
       value: [
         //  Whether or not is `required` is defined in vue code, because required is dynamic, is determined by the tag's `attribute`
         { validator: validTagValue, trigger: 'blur' },
+
       ],
     }
   })

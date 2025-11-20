@@ -57,7 +57,7 @@ const enter = () => {
   emits('enter', myValue.value)
 }
 
-const input = (val: string) => {
+const input = (val: any) => {
   emits('input', val)
 }
 

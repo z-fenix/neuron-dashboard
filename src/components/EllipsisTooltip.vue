@@ -4,7 +4,7 @@
       :content="tooltipContent"
       :disabled="!tooltipVisible"
       effect="dark"
-      :placement="placement"
+      :placement="props.placement"
       popper-class="tooltip-popper"
     >
       <span class="tooltip-wrap">
@@ -17,8 +17,9 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, defineProps, ref } from 'vue'
+import { computed, defineComponent, ref } from 'vue'
 import { ElTooltip } from 'element-plus'
+import type { Placement } from 'element-plus/es/components/popper'
 
 export default defineComponent({
   name: 'EllipsisTooltip',
@@ -26,11 +27,18 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-const props = defineProps({
-  text: { type: String, default: '' },
-  content: { type: String, default: '' },
-  placement: { type: String, default: 'top' },
-  className: { type: String, default: 'text' },
+interface Props {
+  text?: string
+  content?: string
+  placement?: Placement
+  className?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  text: '',
+  content: '',
+  placement: 'top',
+  className: 'text',
 })
 
 const textRef = ref()
@@ -41,11 +49,11 @@ const tooltipContent = computed(() => {
   return !content ? props.text : content
 })
 
-const visibilityChange = (event: any) => {
-  const ev = event.target
+const visibilityChange = (event: Event) => {
+  const ev = event.target as HTMLElement
   const containerHeight = ev.offsetHeight
   const textHeight = textRef.value?.offsetHeight
-  tooltipVisible.value = textHeight && containerHeight < textHeight ? true : !true
+  tooltipVisible.value = textHeight && containerHeight < textHeight
 }
 </script>
 
@@ -68,6 +76,7 @@ span.text {
   white-space: initial;
 }
 </style>
+
 <style lang="scss">
 .tooltip-popper {
   max-width: 400px !important;
