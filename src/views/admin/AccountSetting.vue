@@ -19,9 +19,8 @@
 import { computed } from 'vue'
 import store from '@/store'
 import i18n from '../../i18n/index'
-import { setLang } from '@/composables/useLang'
-// import { useI18n } from 'vue-i18n'
-// const { locale } = useI18n()
+import { useLang } from '@/composables/useLang'
+
 
 const langOptionList = [
   {
@@ -34,7 +33,7 @@ const langOptionList = [
   },
 ]
 
-const { initLang } = setLang()
+const { changeLanguage } = useLang()
 
 const lang = computed({
   get() {
@@ -42,9 +41,9 @@ const lang = computed({
   },
   set(val: string) {
     store.commit('SET_LANG', val)
-    i18n.global.locale.value = val
+    i18n.global.locale.value = val as 'zh'|| 'en'
     // locale.value = val
-    initLang()
+    changeLanguage(val as 'zh'|| 'en')
   },
 })
 </script>

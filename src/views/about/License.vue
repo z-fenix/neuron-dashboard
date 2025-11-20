@@ -120,7 +120,7 @@ const getLicense = async () => {
   try {
     isDataLoading.value = true
     const { data } = await queryLicense()
-    const { error, ...license } = data
+    const {  ...license } = data
     const { max_nodes, used_nodes, used_tags, max_node_tags } = license
     const nodesUsage = parseFloat((Number(used_nodes) / Number(max_nodes)).toFixed(2)) * 100
     const tagsUsage = parseFloat((Number(used_tags) / Number(max_node_tags)).toFixed(2)) * 100
