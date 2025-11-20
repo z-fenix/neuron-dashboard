@@ -17,6 +17,7 @@ module.exports = {
     'no-use-before-define': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'vue/multi-word-component-names': 'off',
+    'vue/no-reserved-component-names': 'off',
     'import/no-unresolved': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',

@@ -75,9 +75,9 @@ import { EN_LANG } from '@/config/index'
 const store = useStore()
 const router = useRouter()
 
-const goLicense = () => {
-  router.push({ name: 'License' })
-}
+// const goLicense = () => {
+//   router.push({ name: 'License' })
+// }
 
 const goAbout = () => {
   router.push({ name: 'About' })

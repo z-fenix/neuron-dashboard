@@ -2,7 +2,7 @@
   <div class="main">
     <el-container>
       <el-header>
-        <Header class="header" />
+        <Header class="header" ></Header>
       </el-header>
       <el-container class="body" >
         <el-aside ref="navContainer" class="nav-container" style="width: 220px">
@@ -64,19 +64,6 @@ export default defineComponent({
       }, 200)
     }
 
-    const initializeNavPosition = () => {
-      if (navContainer.value&&navContainer.value.style) {
-        const posY = navContainer.value.offsetTop
-        
-        if (window.innerWidth >= 1000) {
-          navContainer.value.style.position = 'fixed'
-          navContainer.value.style.top = `${posY}px`
-        } else {
-          navContainer.value.style.position = 'static'
-        }
-      }
-    }
-
     onMounted(() => {
       //initializeNavPosition()
       window.addEventListener('resize', handleResize)
@@ -102,7 +89,7 @@ export default defineComponent({
   overflow-x: auto; 
 }
 .body{
-  height: calc(100vh - 120px);
+  height: calc(100vh - 80px);
 }
 .nav-container {
   width: 220px;
