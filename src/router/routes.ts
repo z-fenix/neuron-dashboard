@@ -133,7 +133,7 @@ const routes: Array<RouteRecordRaw> = [
     ],
   },
   /** Template */
-  {
+  /** {
     path: '/configuration/template',
     name: 'Template',
     meta: { title: 'config.templateManagement' },
@@ -178,11 +178,11 @@ const routes: Array<RouteRecordRaw> = [
         ],
       },
     ],
-  },
+  }, */
   /** Plugin */
   {
     path: '/configuration/plugin',
-    name: 'Plugin',
+    name: 'PluginHome',
     meta: { title: 'config.plugin' },
     component: Home,
     children: [

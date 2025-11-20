@@ -1,35 +1,34 @@
 <template>
   <div class="add-tag">
-    <emqx-card shadow="none">
+    <el-card >
       <h3 class="card-title">{{ $t('config.addTags') }}</h3>
-    </emqx-card>
+    </el-card>
 
-    <emqx-card shadow="none">
+    <el-card >
       <TagListForm ref="tagFormRef" :data="formData" :node-plugin-info="pluginInfo" @deleteTagItem="deleteTagItem" />
-      <emqx-button class="btn-add-tag" @click="addTagItem">
-        <i class="iconfont iconcreate" />
+      <el-button class="btn-add-tag" @click="addTagItem" :icon="Plus">
         <span>{{ $t('common.add') }}</span>
-      </emqx-button>
-    </emqx-card>
+      </el-button>
+    </el-card>
 
-    <emqx-card shadow="none" class="footer add-tag-ft">
-      <emqx-button type="primary" @click="submit" :disabled="formData.tagList.length === 0" :loading="isSubmitting">{{
+    <el-card  class="footer add-tag-ft">
+      <el-button type="primary" @click="submit" :disabled="formData.tagList.length === 0" :loading="isSubmitting">{{
         $t('common.create')
-      }}</emqx-button>
-      <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
-    </emqx-card>
+      }}</el-button>
+      <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
+    </el-card>
   </div>
 </template>
 
 <script lang="ts" setup>
 import TagListForm from '@/views/config/southDriver/components/TagListForm.vue'
 import useAddTag from '@/composables/config/useTemplateAddTag'
-
+import { Plus } from '@element-plus/icons-vue'
 const { pluginInfo, formData, isSubmitting, addTagItem, deleteTagItem, tagFormRef, cancel, submit } = useAddTag()
 </script>
 
 <style lang="scss" scoped>
-.emqx-card {
+.el-card {
   margin-bottom: 24px;
 }
 .card-title {
@@ -55,7 +54,7 @@ const { pluginInfo, formData, isSubmitting, addTagItem, deleteTagItem, tagFormRe
 }
 .add-tag-ft {
   text-align: center;
-  .emqx-button {
+  .el-button {
     width: 130px;
   }
 }

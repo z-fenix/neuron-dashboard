@@ -1,7 +1,7 @@
 import { addDriverByPlugin, addDriverByTemplate } from '@/api/config'
 import type { NodeForm } from '@/types/config'
 import { DriverDirection } from '@/types/enums'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import type { Ref } from 'vue'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -36,7 +36,7 @@ export default (type: DriverDirection) => {
   const dialogTitle = computed(() => (type === DriverDirection.North ? t('config.addApp') : t('config.newDevice')))
 
   const initForm = async () => {
-    formCom.value.resetField()
+    formCom.value?.resetFields()
     driverForm.value = createRawDriverForm()
   }
 
@@ -86,7 +86,7 @@ export default (type: DriverDirection) => {
         await addDriverByTemplateMode()
       }
 
-      EmqxMessage.success(t('common.createSuccess'))
+      ElMessage.success(t('common.createSuccess'))
       goNodeConfigPage()
     } catch (error) {
       return Promise.reject()

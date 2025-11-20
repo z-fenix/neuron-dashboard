@@ -1,5 +1,5 @@
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { FileType } from '@/types/enums'
 
 export default () => {
@@ -24,15 +24,15 @@ export default () => {
         if (content) {
           resolve(content as string)
         } else if (content === '') {
-          EmqxMessage.error(t('common.readFileError'))
+          ElMessage.error(t('common.readFileError'))
           reject()
         } else if (content === undefined) {
-          EmqxMessage.error(t('common.readFileError'))
+          ElMessage.error(t('common.readFileError'))
           reject()
         }
       }
       reader.onerror = function (evt) {
-        EmqxMessage.error(t('common.readFileError'))
+        ElMessage.error(t('common.readFileError'))
         reject()
       }
     })

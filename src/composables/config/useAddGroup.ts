@@ -1,12 +1,13 @@
 import { ref, computed } from 'vue'
 import type { GroupForm } from '@/types/config'
 import { addGroup, updateGroup } from '@/api/config'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useNodePluginInfo } from './usePluginInfo'
 
 export default () => {
   const createRawForm = (): GroupForm => ({
+    name: '',
     group: '',
     node: null,
     interval: null,
@@ -68,7 +69,7 @@ export default () => {
         const params = { ...groupForm.value, group: oldGroupName.value, new_name: group }
         await updateGroup(params)
       }
-      EmqxMessage.success(t('common.submitSuccess'))
+      ElMessage.success(t('common.submitSuccess'))
     } catch (error) {
       return Promise.reject()
     } finally {
@@ -81,7 +82,7 @@ export default () => {
   }
 
   const resetFields = () => {
-    formCom.value.form.resetFields()
+    formCom.value.form?.resetFields()
   }
 
   // get node plugin schema

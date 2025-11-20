@@ -2,7 +2,7 @@ import type { Ref, WritableComputedRef } from 'vue'
 import { computed, ref } from 'vue'
 import { LogType } from '@/types/enums'
 import { queryLog } from '@/api/admin'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { UPPER_LOWERCASE_REGEX } from '@/utils/regexps'
 
@@ -55,7 +55,7 @@ export default () => {
 
   const getLogs = async () => {
     if (!startTime.value || !endTime.value) {
-      EmqxMessage.error(t('admin.timeRangeRequired'))
+      ElMessage.error(t('admin.timeRangeRequired'))
       return
     }
     const { size, num } = pageController.value

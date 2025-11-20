@@ -1,5 +1,5 @@
 <template>
-  <emqx-select
+  <el-select
     v-model="template"
     clearable
     :size="size"
@@ -8,8 +8,8 @@
     :disabled="disabled"
     @change="change"
   >
-    <emqx-option v-for="item in templateListMap" :key="item.name" :value="item.name" :label="item.name" />
-  </emqx-select>
+    <el-option v-for="item in templateListMap" :key="item.name" :value="item.name" :label="item.name" />
+  </el-select>
 </template>
 
 <script lang="ts" setup>
@@ -19,7 +19,7 @@ import { useTemplateListMap } from '@/composables/config/useTemplateList'
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
-  size: { type: String, default: '' },
+  size: { type: String, default: 'default' },
   disabled: { type: Boolean, default: false },
   width: { type: String, default: '220px' },
   placeholder: { type: String, default: '' },

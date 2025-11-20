@@ -6,24 +6,24 @@
     :title="$t(`${dialogTitle}`)"
     :z-index="2000"
   >
-    <emqx-form ref="formRef" :model="groupForm" :rules="groupRules">
-      <emqx-form-item prop="group" :label="$t('config.groupName')" required>
-        <emqx-input v-model.trim="groupForm.group" />
-      </emqx-form-item>
-      <emqx-form-item prop="interval" :label="$t('config.interval')" required>
-        <emqx-input v-model.number="groupForm.interval">
+    <el-form ref="formRef" :model="groupForm" label-position="top" :rules="groupRules">
+      <el-form-item prop="group" :label="$t('config.groupName')" required>
+        <el-input v-model.trim="groupForm.group" />
+      </el-form-item>
+      <el-form-item prop="interval" :label="$t('config.interval')" required>
+        <el-input v-model.number="groupForm.interval">
           <template #append>ms</template>
-        </emqx-input>
-      </emqx-form-item>
-    </emqx-form>
+        </el-input>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
+        <el-button type="primary" size="small" :loading="isSubmitting" @click="submit">
           {{ $t(`${confirmBtnText}`) }}
-        </emqx-button>
-        <emqx-button size="small" @click="close">
+        </el-button>
+        <el-button size="small" @click="close">
           {{ $t('common.cancel') }}
-        </emqx-button>
+        </el-button>
       </span>
     </template>
   </el-dialog>
@@ -39,7 +39,7 @@ import type { GroupFormDefault, GroupForm, TemplateGroupForm } from '@/types/con
 const createRawForm = (): GroupFormDefault => ({
   group: '',
   interval: null,
-  new_name: undefined,
+  new_name: '',
 })
 
 const emit = defineEmits(['update:modelValue', 'update:dialogVisible', 'submitted', 'close'])
@@ -115,7 +115,7 @@ const confirmBtnText = computed(() => {
 })
 
 const resetFields = () => {
-  formRef.value.form.resetFields()
+  formRef.value.form?.resetFields()
 }
 const initForm = () => {
   groupForm.value = createRawForm()
@@ -130,7 +130,7 @@ const showDialog = computed({
 
 watch(showDialog, async (val) => {
   nextTick(() => {
-    formRef.value.form.clearValidate()
+    formRef.value.form?.clearValidate()
   })
   if (!val) {
     resetFields()
@@ -148,7 +148,7 @@ const submit = async () => {
       interval,
     }
   }
-  await formRef.value.validate()
+  await formRef.value?.validate()
   emit('submitted')
 }
 const close = () => {

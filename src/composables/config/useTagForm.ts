@@ -180,7 +180,7 @@ export default (props: any) => {
   }
 
   const resetFields = () => {
-    return formCom.value.resetField()
+    return formCom.value?.resetFields()
   }
 
   return {

@@ -1,6 +1,6 @@
 <template>
   <div class="collapse-all">
-    <el-radio-group v-model="isCollapseAll" size="mini" @change="switchCollapseAll">
+    <el-radio-group v-model="isCollapseAll" size="small" @change="switchCollapseAll">
       <el-radio-button class="item" label="expand">{{ $t('common.expandAll') }}</el-radio-button>
       <el-radio-button class="item" label="collapse">{{ $t('common.collapseAll') }}</el-radio-button>
     </el-radio-group>
@@ -95,7 +95,7 @@ watch(checkedValue.value, (newV) => {
   emits('update:modelValue', newV)
 })
 
-const switchCollapseAll = (value: string) => {
+const switchCollapseAll = (value: any) => {
   if (value === 'expand') {
     activeNames.value = allNodeNameList.value
   } else {

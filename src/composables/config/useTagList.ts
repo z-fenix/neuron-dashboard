@@ -4,7 +4,7 @@ import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { MessageBoxConfirm } from '@/utils/element'
 import usePaging from '@/composables/usePaging'
 import { OmitArrayFields, spliceKeywords } from '@/utils/utils'
@@ -104,7 +104,7 @@ export default () => {
       tags: list.map(({ name }) => name),
     }
     await deleteTag(params)
-    EmqxMessage.success(t('common.operateSuccessfully'))
+    ElMessage.success(t('common.operateSuccessfully'))
     refreshTable()
   }
 

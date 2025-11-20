@@ -1,18 +1,18 @@
 <!-- Discard，this page has been moved to th Header.vue -->
 <template>
-  <emqx-card class="account-setting">
+  <el-card class="account-setting">
     <h3 class="card-title">{{ $t('common.accountSettings') }}</h3>
     <div>
       <h6 class="sub-block-title">{{ $t('common.lang') }}</h6>
-      <emqx-row>
-        <emqx-col :span="12">
-          <emqx-select v-model="lang">
-            <emqx-option v-for="item in langOptionList" :key="item.label" :value="item.value" :label="item.label" />
-          </emqx-select>
-        </emqx-col>
-      </emqx-row>
+      <el-row>
+        <el-col :span="12">
+          <el-select v-model="lang">
+            <el-option v-for="item in langOptionList" :key="item.label" :value="item.value" :label="item.label" />
+          </el-select>
+        </el-col>
+      </el-row>
     </div>
-  </emqx-card>
+  </el-card>
 </template>
 
 <script lang="ts" setup>

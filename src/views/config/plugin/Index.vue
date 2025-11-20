@@ -1,39 +1,40 @@
 <template>
-  <emqx-card class="plugin" v-emqx-loading="isListLoading">
+  <el-card class="plugin" v-loading="isListLoading">
     <ViewHeaderBar>
       <template v-slot:left>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addPlugin">
+        <el-button type="primary" :icon="Plus" class="header-item btn" @click="addPlugin">
           {{ $t('config.addPlugin') }}
-        </emqx-button>
+        </el-button>
       </template>
       <template v-slot:right>
-        <emqx-select
+        <el-select
           v-model="filterNodeType"
+          size="large"
           clearable
-          size="medium"
           :placeholder="$t('common.pleaseSelect')"
           class="header-item filter-item"
         >
-          <emqx-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
-          <emqx-option :value="ALL_KEY" :label="$t('config.all')"></emqx-option>
-        </emqx-select>
+          <el-option v-for="item in nodeTypeList" :key="item.value" :value="item.value" :label="item.label" />
+          <el-option :value="ALL_KEY" :label="$t('config.all')"></el-option>
+        </el-select>
       </template>
     </ViewHeaderBar>
 
     <ul class="setup-list">
-      <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="item in listToShow" :key="item.name" tag="li" class="setup-item">
+      <el-row :gutter="24">
+        <el-col :span="8" v-for="item in listToShow" :key="item.name" tag="li" class="setup-item">
           <PluginItemCard :data="item" @deleted="getPluginList" @edit="editPlugin(item)" />
-        </emqx-col>
-      </emqx-row>
+        </el-col>
+      </el-row>
     </ul>
-    <emqx-empty v-if="!isListLoading && listToShow.length === 0" />
-  </emqx-card>
+    <el-empty v-if="!isListLoading && listToShow.length === 0" />
+  </el-card>
   <PluginDialog v-model="showDialog" :plugin="currentPlugin" @submitted="getPluginList" />
 </template>
 
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
+import { Plus } from '@element-plus/icons-vue'
 import { useNodeTypeSelect } from '@/composables/config/useDriver'
 import usePlugin from '@/composables/config/usePlugin'
 import type { CreatedPlugin } from '@/types/config'
@@ -72,6 +73,9 @@ const addPlugin = () => {
   currentPlugin.value = undefined
   showDialog.value = true
 }
+const editPlugin=(row:any)=>{
+  row.id
+}
 </script>
 
 <style lang="scss" scoped>
@@ -87,7 +91,7 @@ const addPlugin = () => {
     }
   }
 
-  :deep(.emqx-select) {
+  :deep(.el-select) {
     .el-icon-circle-close {
       font-size: 16px;
     }

@@ -7,12 +7,14 @@
 
 /* Dropdown */
 .el-dropdown-menu__item {
+
   [class^='el-icon-'],
   [class*=' el-icon-'] {
     font-size: 16px;
     margin-right: 8px;
   }
 }
+
 .danger.el-dropdown-menu__item:not(.is-disabled):hover,
 .danger.el-dropdown-menu__item:focus {
   background-color: var(--minor-red-color);
@@ -20,7 +22,7 @@
 }
 
 /* Tabs */
-.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+.el-tabs--card>.el-tabs__header .el-tabs__item.is-active {
   border-bottom-color: #189bfe;
 }
 
@@ -32,7 +34,7 @@
 }
 
 /* Table */
-.el-table.emqx-table th {
+.el-table th {
   background: #f4f9fc;
 }
 
@@ -41,16 +43,18 @@
   cursor: pointer;
   font-size: 24px;
   color: #0d446e;
+
   &:not(:last-child) {
     margin-right: 16px;
   }
+
   &:hover {
     color: #062a63;
   }
 }
 
 /* Input */
-.emqx-input.normal-disabled {
+.el-input.normal-disabled {
   .el-input__inner {
     background-color: #fff;
     border: 1px solid #dcdfe6;
@@ -59,14 +63,16 @@
 }
 
 /* Button */
-.emqx-button {
+.el-button {
   line-height: 1;
+
   .iconfont {
     margin-right: 4px;
     font-size: 14px;
     vertical-align: top;
   }
-  .iconfont + span {
+
+  .iconfont+span {
     display: inline-block;
     height: 14px;
     font-size: 14px;
@@ -75,7 +81,7 @@
   }
 }
 
-.emqx-button.el-button {
+.el-button.el-button {
   border-radius: 4px;
 }
 

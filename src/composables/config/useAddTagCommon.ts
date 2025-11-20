@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import type { TagFormItem, TagForm, TagData } from '@/types/config'
 import { TagType, TagAttributeType } from '@/types/enums'
 import { dataType, createRandomString } from '@/utils/utils'
@@ -217,7 +217,7 @@ export default () => {
     errorRows = errorRows.sort()
     const errorRow = errorRows[0]
     if (errorRow) {
-      EmqxMessage.error(t('config.tableRowDataError', { rowNum: Number(errorRow) + 1 }))
+      ElMessage.error(t('config.tableRowDataError', { rowNum: Number(errorRow) + 1 }))
     }
   }
 

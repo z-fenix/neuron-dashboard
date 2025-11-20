@@ -9,7 +9,7 @@ import {
 import type { GroupData, SubscriptionData, SubscriptionsData, SubscriptionDataForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed, nextTick } from 'vue'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { MessageBoxConfirm } from '@/utils/element'
 import { useI18n } from 'vue-i18n'
 import { useRoute } from 'vue-router'
@@ -84,7 +84,7 @@ export const useSubscriptionList = () => {
       } else {
         await deleteSubscription(data)
       }
-      EmqxMessage.success(t('common.operateSuccessfully'))
+      ElMessage.success(t('common.operateSuccessfully'))
       getSubscriptionList()
     } catch (error) {
       console.error(error)
@@ -114,7 +114,7 @@ export const useSubscriptionList = () => {
       }
       showEditGroupDailog.value = false
 
-      EmqxMessage.success(t('common.submitSuccess'))
+      ElMessage.success(t('common.submitSuccess'))
 
       await updateSubscription(params)
       getSubscriptionList()
@@ -248,7 +248,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
   const initForm = async () => {
     subscriptionForm.value = createRawSubscriptionForm()
     await nextTick()
-    formCom.value.$refs.form.clearValidate()
+    formCom.value.$refs.form?.clearValidate()
 
     if (isMQTTPugin.value) {
       setDefaultTopic()
@@ -308,7 +308,7 @@ export const useAddSubscription = (props: AddSubscriptionProps) => {
         await addSubscription(data)
       }
 
-      EmqxMessage.success(t('common.submitSuccess'))
+      ElMessage.success(t('common.submitSuccess'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()

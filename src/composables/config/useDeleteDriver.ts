@@ -1,5 +1,5 @@
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { MessageBoxConfirm } from '@/utils/element'
 import { deleteDriver } from '@/api/config'
 import type { DriverItemInList } from '@/types/config'
@@ -11,7 +11,7 @@ export default () => {
     try {
       await MessageBoxConfirm()
       await deleteDriver(name)
-      EmqxMessage.success(t('common.operateSuccessfully'))
+      ElMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()

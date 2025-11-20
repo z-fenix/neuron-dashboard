@@ -1,13 +1,13 @@
 <template>
-  <emqx-form ref="formCom" :model="form" :rules="rules" @submit.prevent>
-    <emqx-row :gutter="28">
-      <emqx-col :span="12">
-        <emqx-form-item :label="$t('common.name')" prop="name" required>
-          <emqx-input v-model.trim="form.name" :disabled="edit" />
-        </emqx-form-item>
-      </emqx-col>
-      <emqx-col :span="12">
-        <emqx-form-item :label="$t('common.attribute')" prop="attribute" required>
+  <el-form ref="formCom" :model="form" label-position="top" :rules="rules" @submit.prevent>
+    <el-row :gutter="28">
+      <el-col :span="12">
+        <el-form-item :label="$t('common.name')" prop="name" required>
+          <el-input v-model.trim="form.name" :disabled="edit" />
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item :label="$t('common.attribute')" prop="attribute" required>
           <template #label>
             <span>{{ $t('common.attribute') }}</span>
             <AComWithDesc :content="$t('config.staticNotSupportBytes')">
@@ -15,23 +15,23 @@
             </AComWithDesc>
           </template>
           <TagAttributeSelect v-model="form.attribute" @change="changeAttribute" />
-        </emqx-form-item>
-      </emqx-col>
-      <emqx-col :span="12">
-        <emqx-form-item :label="$t('common.type')" prop="type" required>
-          <emqx-select v-model="form.type" :placeholder="$t('common.pleaseSelect')" @change="changeType">
-            <emqx-option
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item :label="$t('common.type')" prop="type" required>
+          <el-select v-model="form.type" :placeholder="$t('common.pleaseSelect')" @change="changeType">
+            <el-option
               v-for="item in tagTypeOptListAfterFilter"
               :key="item.value"
               :value="item.value"
               :label="item.label"
               :disabled="item.value === TagType.BYTES && isAttrsIncludeStatic(form.attribute)"
             />
-          </emqx-select>
-        </emqx-form-item>
-      </emqx-col>
-      <emqx-col :span="12">
-        <emqx-form-item
+          </el-select>
+        </el-form-item>
+      </el-col>
+      <el-col :span="12">
+        <el-form-item
           :label="$t('config.address')"
           prop="address"
           :rules="[
@@ -39,12 +39,12 @@
             ...rules.address,
           ]"
         >
-          <emqx-input v-model.trim="form.address" />
-        </emqx-form-item>
-      </emqx-col>
+          <el-input v-model.trim="form.address" />
+        </el-form-item>
+      </el-col>
 
-      <emqx-col v-if="isAttrsIncludeStatic(form.attribute)" :span="12">
-        <emqx-form-item
+      <el-col v-if="isAttrsIncludeStatic(form.attribute)" :span="12">
+        <el-form-item
           :label="$t('config.tagValue')"
           prop="value"
           :rules="[
@@ -55,30 +55,30 @@
             },
           ]"
         >
-          <emqx-input v-model.trim="form.value" />
-        </emqx-form-item>
-      </emqx-col>
+          <el-input v-model.trim="form.value" />
+        </el-form-item>
+      </el-col>
 
-      <emqx-col v-if="isShowPrecisionField(form.type) && !isAttrsIncludeStatic(form.attribute)" :span="12">
-        <emqx-form-item :label="$t('config.precision')" prop="precision">
-          <emqx-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
-        </emqx-form-item>
-      </emqx-col>
+      <el-col v-if="isShowPrecisionField(form.type) && !isAttrsIncludeStatic(form.attribute)" :span="12">
+        <el-form-item :label="$t('config.precision')" prop="precision">
+          <el-input-number v-model="form.precision" :min="0" :max="17" controls-position="right" />
+        </el-form-item>
+      </el-col>
 
-      <emqx-col v-if="!isAttrsIncludeStatic(form.attribute)" :span="12">
-        <emqx-form-item :label="$t('config.decimal')" prop="decimal">
+      <el-col v-if="!isAttrsIncludeStatic(form.attribute)" :span="12">
+        <el-form-item :label="$t('config.decimal')" prop="decimal">
           <!--  @blur="changeDecimal" -->
-          <emqx-input-number v-model="form.decimal" :step="0.1" controls-position="right" />
-        </emqx-form-item>
-      </emqx-col>
+          <el-input-number v-model="form.decimal" :step="0.1" controls-position="right" />
+        </el-form-item>
+      </el-col>
 
-      <emqx-col :span="12">
-        <emqx-form-item :label="$t('config.desc')">
-          <emqx-input v-model="form.description" />
-        </emqx-form-item>
-      </emqx-col>
-    </emqx-row>
-  </emqx-form>
+      <el-col :span="12">
+        <el-form-item :label="$t('config.desc')">
+          <el-input v-model="form.description" />
+        </el-form-item>
+      </el-col>
+    </el-row>
+  </el-form>
 </template>
 
 <script lang="ts" setup>
@@ -134,7 +134,7 @@ const changeAttribute = () => {
   }
   // validate  'address'
   nextTick(() => {
-    formCom.value.form.validateField('address')
+    formCom.value.form?.validateField('address')
   })
 }
 
@@ -145,13 +145,13 @@ const changeType = () => {
     validateFields.push(`value`)
   }
 
-  formCom.value.form.validateField(validateFields)
+  formCom.value.form?.validateField(validateFields)
 }
 
 // used when 'vaule' is related width decimal
 // validate address when change tag `Decimal`
 // const changeDecimal = () => {
-//   formCom.value.form.validateField('value')
+//   formCom.value.form?.validateField('value')
 // }
 
 defineExpose({

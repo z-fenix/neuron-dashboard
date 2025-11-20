@@ -4,7 +4,6 @@
     v-model="myValue"
     :disabled="disabled"
     :clearable="clearable"
-    size="medium"
     :placeholder="$t(`${placeholder}`)"
     class="common-autocomplete_input"
     :fetch-suggestions="getKeywordList"

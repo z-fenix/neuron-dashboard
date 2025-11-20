@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="dynamicTableRef" :model="formData">
+  <el-form ref="dynamicTableRef" :model="formData" label-position="top">
     <el-table :data="formData.list" style="width: 100%" stripe>
       <template v-for="field in allFields" :key="fieldName(field.name).length > field.name">
         <el-table-column :min-width="fieldName(field.name).length > 10 ? 170 : 110">
@@ -27,42 +27,42 @@
               :rules="getRules(field)"
             >
               <!-- Number -->
-              <emqx-input
+              <el-input
                 v-if="field.type === TypeOfPluginParam.Int"
                 v-model.number="row[fieldName(field.name)]"
                 type="number"
               />
 
               <!-- String -->
-              <emqx-input
+              <el-input
                 v-else-if="field.type === TypeOfPluginParam.String"
                 v-model.trim="row[fieldName(field.name)]"
               />
 
               <!-- Boolean -->
-              <emqx-radio-group
+              <el-radio-group
                 v-else-if="field.type === TypeOfPluginParam.Boolean"
                 v-model="row[fieldName(field.name)]"
               >
-                <emqx-radio :label="true">True</emqx-radio>
-                <emqx-radio :label="false">False</emqx-radio>
-              </emqx-radio-group>
+                <el-radio :label="true">True</el-radio>
+                <el-radio :label="false">False</el-radio>
+              </el-radio-group>
 
               <!-- Map -->
               <template v-else-if="field.type === TypeOfPluginParam.Map">
-                <emqx-radio-group v-if="field.valid.map.length < 3" v-model="row[fieldName(field.name)]">
-                  <emqx-radio v-for="{ key, value } in field.valid.map" :key="value" :label="value">
+                <el-radio-group v-if="field.valid.map.length < 3" v-model="row[fieldName(field.name)]">
+                  <el-radio v-for="{ key, value } in field.valid.map" :key="value" :label="value">
                     {{ upperFirstLetter(key) }}
-                  </emqx-radio>
-                </emqx-radio-group>
-                <emqx-select v-else v-model="row[fieldName(field.name)]" :placeholder="$t('common.pleaseSelect')">
-                  <emqx-option
+                  </el-radio>
+                </el-radio-group>
+                <el-select v-else v-model="row[fieldName(field.name)]" :placeholder="$t('common.pleaseSelect')">
+                  <el-option
                     v-for="{ key, value } in field.valid.map"
                     :key="value"
                     :value="value"
                     :label="upperFirstLetter(key)"
                   />
-                </emqx-select>
+                </el-select>
               </template>
             </el-form-item>
             <el-form-item v-else>
@@ -73,26 +73,26 @@
       </template>
       <el-table-column :label="$t('common.oper')" fixed="right" min-width="100">
         <template #default="{ $index }">
-          <emqx-button
+          <el-button
             type="danger"
-            size="mini"
+            size="small"
             :disabled="range.min && $index < range.min && formData.list.length === range.min"
             @click="deleteItem($index)"
           >
             {{ $t('common.delete') }}
-          </emqx-button>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <emqx-button
+    <el-button
       class="btn-add"
       size="small"
+      :icon="Plus"
       :disabled="range.max && formData.list.length >= range.max"
       @click="addItem"
     >
-      <i class="iconfont iconcreate" />
       <span>{{ $t('common.add') }}</span>
-    </emqx-button>
+    </el-button>
   </el-form>
 </template>
 
@@ -101,6 +101,7 @@ import { cloneDeep } from 'lodash'
 import { ref, defineProps, defineEmits, computed, defineExpose } from 'vue'
 import type { PropType } from 'vue'
 import { ElForm, ElTable, ElFormItem, ElTableColumn, ElPopover } from 'element-plus'
+import { Plus } from '@element-plus/icons-vue'
 import type { ParamInfo } from '@/types/config'
 import { TypeOfPluginParam } from '@/types/enums'
 import useLang from '@/composables/useLang'

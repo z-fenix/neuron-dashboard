@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="formCom" :model="formData" @submit.prevent>
+  <el-form ref="formCom" :model="formData" label-position="top"  @submit.prevent>
     <el-table :data="formData.tagList" :empty-text="$t('common.emptyData')" :header-row-class-name="'thead-row'">
       <el-table-column width="120" fixed>
         <template #header>
@@ -7,7 +7,7 @@
         </template>
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.name`" :rules="rules.name" required>
-            <emqx-input v-model.trim="row.name" :disabled="edit" />
+            <el-input v-model.trim="row.name" :disabled="edit" />
           </el-form-item>
         </template>
       </el-table-column>
@@ -32,15 +32,15 @@
         </template>
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.type`" :rules="rules.type" required>
-            <emqx-select v-model="row.type" :placeholder="$t('common.pleaseSelect')" @change="changeType(row, $index)">
-              <emqx-option
+            <el-select v-model="row.type" :placeholder="$t('common.pleaseSelect')" @change="changeType(row, $index)">
+              <el-option
                 v-for="item in tagTypeOptListAfterFilter"
                 :key="item.value"
                 :value="item.value"
                 :label="item.label"
                 :disabled="item.value === TagType.BYTES && isAttrsIncludeStatic(row.attribute)"
               />
-            </emqx-select>
+            </el-select>
           </el-form-item>
         </template>
       </el-table-column>
@@ -55,14 +55,14 @@
             :prop="`tagList.${$index}.address`"
             :rules="[{ required: false }, rules.address]"
           >
-            <emqx-input v-model="row.address" />
+            <el-input v-model="row.address" />
           </el-form-item>
           <el-form-item
             v-else
             :prop="`tagList.${$index}.address`"
             :rules="[{ required: true, message: $t('config.tagAddressRequired') }, ...rules.address]"
           >
-            <emqx-input v-model="row.address" />
+            <el-input v-model="row.address" />
           </el-form-item>
         </template>
       </el-table-column>
@@ -83,7 +83,7 @@
               },
             ]"
           >
-            <emqx-input v-if="isAttrsIncludeStatic(row.attribute)" v-model.trim="row.value" />
+            <el-input v-if="isAttrsIncludeStatic(row.attribute)" v-model.trim="row.value" />
             <span v-else>-</span>
           </el-form-item>
         </template>
@@ -92,7 +92,7 @@
       <el-table-column :label="$t('config.desc')" width="120">
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.description`">
-            <emqx-input v-model="row.description" type="text" />
+            <el-input v-model="row.description" type="text" />
           </el-form-item>
         </template>
       </el-table-column>
@@ -101,7 +101,7 @@
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.decimal`">
             <!-- @blur="changeDecimal($index)" -->
-            <emqx-input-number
+            <el-input-number
               v-if="!isAttrsIncludeStatic(row.attribute)"
               v-model="row.decimal"
               :step="0.1"
@@ -115,7 +115,7 @@
       <el-table-column :label="$t('config.precision')" width="110">
         <template #default="{ row, $index }">
           <el-form-item :prop="`tagList.${$index}.precision`">
-            <emqx-input-number
+            <el-input-number
               v-if="isShowPrecisionField(row.type) && !isAttrsIncludeStatic(row.attribute)"
               v-model="row.precision"
               :min="0"
@@ -129,14 +129,14 @@
 
       <el-table-column :label="$t('common.oper')" fixed="right" min-width="80">
         <template #default="{ $index }">
-          <emqx-button
+          <el-button
             type="danger"
             size="mini"
             :disabled="$index === 0 && formData.tagList.length === 1"
             @click="deleteItem($index)"
           >
             {{ $t('common.delete') }}
-          </emqx-button>
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

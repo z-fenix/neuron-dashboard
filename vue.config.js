@@ -13,14 +13,14 @@ module.exports = {
     port: 3003,
     proxy: {
       '/api/v2/ekuiper': {
-        target: 'http://localhost:9081',
+        target: 'http://192.168.88.189:9081',
         changeOrigin: true,
         pathRewrite: {
           '/api/v2/ekuiper': '/',
         },
       },
       '/api': {
-        target: process.env.VUE_APP_HOST,
+        target: 'http://192.168.88.107:7000',
         changeOrigin: true,
       },
     },

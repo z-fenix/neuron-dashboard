@@ -1,9 +1,10 @@
 import i18n from '@/i18n/index'
 import { ERROR_CODE_ARR, SELF_HANDLE_ERROR_CODES } from './constants'
 import { utils as XLSXUtils, writeFile } from 'xlsx'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { omit, cloneDeep, orderBy } from 'lodash'
 
+const { t } = i18n.global as any
 /**
  * when the value is int, can use this func to create option list
  */
@@ -19,9 +20,7 @@ export const createOptionListFromEnum = (e: Record<string, any>) => {
 const firstLowerCase = ([first, ...rest]: string) => first.toLowerCase() + rest.join('')
 
 export const createCommonErrorMessage = (type: 'input' | 'select', target: string) => {
-  const {
-    global: { t },
-  } = i18n
+
   const local = i18n.global.locale
 
   let targetStr = target
@@ -64,8 +63,7 @@ export const getErrorMsg = (errorCode: number): string => {
   if (!hasErrorMsg) {
     return 'unknown'
   }
-
-  return i18n.global.t(`error.${errorCode}`)
+  return t(`error.${errorCode}`)
 }
 
 export const exportExcelData = (content: Array<any>, fileName: string) => {
@@ -107,17 +105,16 @@ export interface CompatibleErrorCode {
 }
 export const popUpErrorMessage = (error: number, config?: CompatibleErrorCode) => {
   const { compatibleErrorCode, name = '' } = config || {}
-
   // 10701 - 10744: used 10701
   const errorCode = error >= 10701 && error <= 10744 ? 10701 : error
 
   const isHandleErrorCodeSelf = SELF_HANDLE_ERROR_CODES[name]?.includes(errorCode)
   const errorMsg =
     compatibleErrorCode && isHandleErrorCodeSelf
-      ? i18n.global.t(`error.${name}${errorCode}`)
+      ? t(`error.${name}${errorCode}`)
       : `Error (code: ${errorCode}): ${getErrorMsg(errorCode)}`
 
-  EmqxMessage({
+  ElMessage({
     message: errorMsg,
     type: 'error',
     dangerouslyUseHTMLString: true,

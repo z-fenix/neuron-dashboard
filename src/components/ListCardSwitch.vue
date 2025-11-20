@@ -1,10 +1,10 @@
 <template>
-  <el-radio-group v-model="type" size="medium" @change="changeType">
+  <el-radio-group v-model="type"  @change="changeType" style="margin-bottom: 8px;">
     <el-radio-button label="list">
-      <i class="icon-item el-icon-s-unfold"></i>
+      <el-icon :size="18"><List /></el-icon>
     </el-radio-button>
     <el-radio-button label="card">
-      <i class="icon-item el-icon-menu"></i>
+      <el-icon :size="18"><Menu /></el-icon>
     </el-radio-button>
   </el-radio-group>
 </template>
@@ -12,6 +12,7 @@
 <script lang="ts" setup>
 import { computed, defineProps, defineEmits } from 'vue'
 import { ElRadioGroup, ElRadioButton } from 'element-plus'
+import {List, Menu} from '@element-plus/icons-vue'
 
 const props = defineProps({
   modelValue: { type: String, default: 'list' },
@@ -25,14 +26,14 @@ const type = computed({
   },
 })
 
-const changeType = (val: string) => {
+const changeType = (val: any) => {
   type.value = val
   emits('change', val)
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/emqx-ui-variables.scss';
+@import '@/styles/ui-variables.scss';
 
 :deep(label) {
   margin-right: 0px;

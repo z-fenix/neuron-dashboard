@@ -1,10 +1,10 @@
 <template>
-  <emqx-input
+  <el-input
     v-model="myValue"
+    size="large"
     :disabled="disabled"
     :clearable="clearable"
     :placeholder="$t(`${placeholder}`)"
-    size="medium"
     class="common-search_input"
     @input="input"
     @change="change"

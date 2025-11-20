@@ -31,9 +31,9 @@
     <template #footer>
       <span class="dialog-footer">
         <el-checkbox v-model="noPrompt" :label="$t('admin.noPrompt')" class="no-prompt" />
-        <emqx-button type="primary" size="small" @click="submit">
+        <el-button type="primary" size="small" @click="submit">
           {{ $t('admin.konw') }}
-        </emqx-button>
+        </el-button>
       </span>
     </template>
   </el-dialog>

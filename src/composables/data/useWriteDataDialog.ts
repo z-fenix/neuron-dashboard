@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { writeData } from '@/api/data'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import useWriteDataCheckNParse, { WriteDataErrorCode } from '@/composables/data/useWriteDataCheckNParse'
 import { useI18n } from 'vue-i18n'
 import type { TagDataInTable } from '@/composables/data/useDataMonitoring'
@@ -141,7 +141,7 @@ export default (props: Props) => {
         tag: tagName as string,
         value,
       })
-      EmqxMessage.success(t('common.submitSuccess'))
+      ElMessage.success(t('common.submitSuccess'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()

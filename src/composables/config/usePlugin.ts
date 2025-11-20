@@ -1,7 +1,7 @@
 import { computed, ref } from 'vue'
 import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { MessageBoxConfirm } from '@/utils/element'
 import { addPlugin, deletePlugin, queryPluginList } from '@/api/config'
 import { createCommonErrorMessage } from '@/utils/utils'
@@ -53,11 +53,11 @@ export default () => {
       const { data } = await queryPluginList()
       pluginList.value = data.plugins.length
         ? data.plugins.map((item) => {
-            return {
-              ...item,
-              // doc_link: pluginLinkURL.value(item.name),
-            }
-          })
+          return {
+            ...item,
+            // doc_link: pluginLinkURL.value(item.name),
+          }
+        })
         : []
       isListLoading.value = false
     } catch (error) {
@@ -79,9 +79,9 @@ export const useGetPluginMsgIdMap = () => {
   const initMsgIdMap = async () => {
     try {
       const { data } = await queryPluginList()
-      ;(data.plugins || []).forEach((item) => {
-        pluginMsgIdMap[item.name] = item
-      })
+        ; (data.plugins || []).forEach((item) => {
+          pluginMsgIdMap[item.name] = item
+        })
       return Promise.resolve(pluginMsgIdMap)
     } catch (error) {
       return Promise.reject(error)
@@ -115,7 +115,7 @@ export const useAddPlugin = () => {
       await pluginFormCom.value.validate()
       isSubmitting.value = true
       await addPlugin(pluginForm.value)
-      EmqxMessage.success(t('common.createSuccess'))
+      ElMessage.success(t('common.createSuccess'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()
@@ -141,7 +141,7 @@ export const useDeletePlugin = () => {
       await MessageBoxConfirm()
 
       await deletePlugin(name)
-      EmqxMessage.success(t('common.operateSuccessfully'))
+      ElMessage.success(t('common.operateSuccessfully'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()

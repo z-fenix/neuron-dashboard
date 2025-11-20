@@ -6,36 +6,36 @@
     :title="dialogTitle"
     :z-index="2000"
   >
-    <emqx-form @keyup.enter="submitData" @submit.prevent>
-      <emqx-form-item :error="inputErrorMsg">
+    <el-form label-position="top" @keyup.enter="submitData" @submit.prevent>
+      <el-form-item :error="inputErrorMsg">
         <template #label>
           <div class="common-flex">
             <span>{{ $t('data.value') }}</span>
             <div v-if="showToggleHexadecimalSwitch">
               <label>{{ $t('data.useHexadecimalInput') }}</label>
-              <emqx-switch v-model="isUseHexadecimal" @change="handleIsUseHexadecimalChanged" />
+              <el-switch v-model="isUseHexadecimal" @change="handleIsUseHexadecimalChanged" />
             </div>
           </div>
         </template>
-        <emqx-input
+        <el-input
           v-if="tag.type !== TagType.BOOL"
           v-model="inputValue"
           :type="isBYTESType ? 'textarea' : 'text'"
           :placeholder="isBYTESType ? '[0,0,0,0]' : ''"
           @blur="validate"
         />
-        <emqx-radio-group v-else v-model="inputValue">
-          <emqx-radio :label="true">True</emqx-radio>
-          <emqx-radio :label="false">False</emqx-radio>
-        </emqx-radio-group>
-      </emqx-form-item>
-    </emqx-form>
+        <el-radio-group v-else v-model="inputValue">
+          <el-radio :label="true">True</el-radio>
+          <el-radio :label="false">False</el-radio>
+        </el-radio-group>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submitData" :loading="isSubmitting">{{
+        <el-button type="primary" size="small" @click="submitData" :loading="isSubmitting">{{
           $t('common.submit')
-        }}</emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        }}</el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>

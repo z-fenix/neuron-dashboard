@@ -1,10 +1,10 @@
-@import  './emqx-ui-variables.scss';
-@import  './colors.scss';
+@import './ui-variables.scss';
+@import './colors.scss';
 
 /* If you need to change the layout and other styles, just replace the `layout-variables.scss` and `base.scss` */
 @import './layout-variables.scss';
-@import  './base.scss';
-@import  './mixins.scss';
+@import './base.scss';
+@import './mixins.scss';
 
 
 :root {
@@ -18,7 +18,9 @@
   --color-border-tab: #e2e7ea;
 }
 
-*, :after, :before {
+*,
+:after,
+:before {
   box-sizing: border-box;
 }
 
@@ -95,22 +97,27 @@ label {
 .sidebar {
   background-color: transparent;
   overflow-y: auto;
+
   .nav-item,
   .el-submenu__title {
     height: 48px;
     padding: 0;
   }
+
   .el-submenu__title {
     margin-bottom: 12px;
     padding-left: 0 !important;
   }
+
   .nav-item {
     min-width: auto;
+
     &:not(:last-child) {
       margin-bottom: 12px;
     }
 
     &.is-active {
+
       .nav-label,
       .nav-icon {
         color: $--menu-active-color;
@@ -139,12 +146,14 @@ label {
     padding-right: 10px;
     line-height: 1;
     text-decoration: none;
+
     .nav-icon {
       margin-right: 15px;
       font-size: 24px;
       width: 24px;
       height: 24px;
     }
+
     span {
       display: inline-block;
       vertical-align: top;
@@ -156,6 +165,7 @@ label {
       font-weight: 500;
     }
   }
+
   .el-menu {
     background-color: transparent;
   }
@@ -181,6 +191,7 @@ h3.card-title {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+
   h3.card-title {
     margin-bottom: 0;
   }
@@ -190,7 +201,7 @@ h3.card-title {
   margin-bottom: 24px;
 }
 
-.emqx-breadcrumb {
+.el-breadcrumb {
   padding-top: 12px;
   padding-bottom: 12px;
   margin-bottom: 6px;
@@ -231,51 +242,63 @@ h3.card-title {
   padding: 24px;
   border-radius: 4px;
   cursor: pointer;
+
   .node-item-hd {
     margin-bottom: 24px;
     font-size: 16px;
   }
+
   .iconfont {
     display: inline-block;
     vertical-align: top;
     font-size: 20px;
     line-height: 1;
   }
+
   .setup-item-handlers {
     @include display-flex(flex-start, center);
     // visibility: hidden;
     flex-shrink: 0;
+
     .iconfont {
       color: #20466c;
       cursor: pointer;
+
       &:not(:last-child) {
         margin-right: 10px;
       }
+
       &.disabled {
         opacity: 0.2;
         cursor: not-allowed;
       }
     }
   }
+
   &:hover {
     box-shadow: 0px 4px 10px -2px rgba(72, 128, 170, 0.23);
     // .setup-item-handlers {
     //   visibility: visible;
     // }
   }
+
   .node-item-info-row {
+
     span,
     label {
       line-height: 20px;
       height: 20px;
     }
+
     label,
     span {
       vertical-align: middle;
     }
+
     .iconfont {
       margin-right: 8px;
     }
+
     &:not(:last-child) {
       margin-bottom: 16px;
     }

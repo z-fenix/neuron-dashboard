@@ -1,66 +1,66 @@
 <template>
-  <emqx-card class="overview" v-emqx-loading="isLoading">
+  <el-card class="overview" v-loading="isLoading">
     <div class="block">
       <div class="block-hd">
         <h3 class="card-title">Neuron Gateway</h3>
         <!-- <span class="sub-title">{{ $t('config.runningTime') }}: 12</span> -->
       </div>
-      <!-- <emqx-row class="charts-container" :gutter="32">
-        <emqx-col :span="16">
+      <!-- <el-row class="charts-container" :gutter="32">
+        <el-col :span="16">
           <MessageChart class="chart" />
-        </emqx-col>
-        <emqx-col :span="8">
+        </el-col>
+        <el-col :span="8">
           <ConfigDataCard class="chart" />
-        </emqx-col>
-      </emqx-row> -->
+        </el-col>
+      </el-row> -->
     </div>
     <div class="block">
       <div class="block-hd common-flex">
         <h3 class="card-title">{{ $t('config.northApp') }}</h3>
         <div>
-          <emqx-button class="btn-link" size="small">
+          <el-button class="btn-link" size="small">
             <router-link :to="{ name: 'NorthDriver' }">{{ $t('config.viewAll') }}</router-link>
-          </emqx-button>
-          <emqx-button size="small" type="primary" @click="showNorthDialog = true">{{
+          </el-button>
+          <el-button size="small" type="primary" @click="showNorthDialog = true">{{
             $t('config.addApplication')
-          }}</emqx-button>
+          }}</el-button>
         </div>
       </div>
-      <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in showList(northDriverList)" :key="item.name">
+      <el-row :gutter="24">
+        <el-col :span="8" v-for="(item, index) in showList(northDriverList)" :key="item.name">
           <SetupItemCard
             :data="item"
             @deleted="getNorthDriverList"
             @updated="getNorthDriverList"
             @toggle-status="setNorthNodeStartStopStatus(item, $event, index)"
           />
-        </emqx-col>
-      </emqx-row>
+        </el-col>
+      </el-row>
     </div>
     <div class="block">
       <div class="block-hd common-flex">
         <h3 class="card-title">{{ $t('config.southDevice') }}</h3>
         <div>
-          <emqx-button class="btn-link" size="small">
+          <el-button class="btn-link" size="small">
             <router-link :to="{ name: 'SouthDriver' }">{{ $t('config.viewAll') }}</router-link>
-          </emqx-button>
-          <emqx-button size="small" type="primary" @click="showSouthDialog = true">{{
+          </el-button>
+          <el-button size="small" type="primary" @click="showSouthDialog = true">{{
             $t('config.addDevice')
-          }}</emqx-button>
+          }}</el-button>
         </div>
       </div>
-      <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in showList(southDriverList)" :key="item.name">
+      <el-row :gutter="24">
+        <el-col :span="8" v-for="(item, index) in showList(southDriverList)" :key="item.name">
           <SouthDriveItemCard
             :data="item"
             @deleted="getSouthDriverList"
             @updated="getSouthDriverList"
             @toggle-status="setSouthNodeStartStopStatus(item, $event, index)"
           />
-        </emqx-col>
-      </emqx-row>
+        </el-col>
+      </el-row>
     </div>
-  </emqx-card>
+  </el-card>
   <DriverDialog v-model="showNorthDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
   <DriverDialog v-model="showSouthDialog" :type="DriverDirection.South" @submitted="getSouthDriverList" />
 </template>

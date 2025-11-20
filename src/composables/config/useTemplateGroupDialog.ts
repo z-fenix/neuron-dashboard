@@ -1,7 +1,7 @@
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { addGroup, updateGroup } from '@/api/template'
 import { useTemplatePluginInfo } from '@/composables/config/usePluginInfo'
 import type { TemplateGroup, TemplateGroupForm } from '@/types/config'
@@ -76,7 +76,7 @@ export default () => {
         await updateGroup(data)
       }
 
-      EmqxMessage.success(t('common.submitSuccess'))
+      ElMessage.success(t('common.submitSuccess'))
       groupDialogVisible.value = false
       return Promise.resolve()
     } catch (error) {

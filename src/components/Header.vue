@@ -1,54 +1,51 @@
 <template>
-  <emqx-header class="header">
-    <template #title>
+  <el-header class="header">
+    <div class="header-container">
       <img src="../assets/images/logo.png" alt="neuron-logo" width="141" />
-    </template>
-
-    <template v-slot:right>
       <div>
-        <emqx-dropdown class="dropdown-item">
+        <el-dropdown class="dropdown-item">
           <span class="el-dropdown-link">
             {{ $t('common.systemInformation') }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>
-            <emqx-dropdown-menu class="header-menu">
-              <emqx-dropdown-item @click="goLicense">
+            <el-dropdown-menu class="header-menu">
+              <!-- <el-dropdown-item @click="goLicense">
                 <i class="iconfont iconLicense"></i>
                 <span>License</span>
-              </emqx-dropdown-item>
-              <emqx-dropdown-item @click="goAbout">
+              </el-dropdown-item> -->
+              <el-dropdown-item @click="goAbout">
                 <i class="iconfont iconabout"></i>
                 <span> {{ $t('common.about') }}</span>
-              </emqx-dropdown-item>
-              <emqx-dropdown-item @click="downloadLogsFile">
+              </el-dropdown-item>
+              <el-dropdown-item @click="downloadLogsFile">
                 <i class="iconfont icondownload"></i>
                 <span> {{ $t('admin.debugFiles') }}</span>
-              </emqx-dropdown-item>
-            </emqx-dropdown-menu>
+              </el-dropdown-item>
+            </el-dropdown-menu>
           </template>
-        </emqx-dropdown>
+        </el-dropdown>
 
-        <emqx-dropdown v-if="!EN_LANG" class="dropdown-item" @command="changeLanguage">
+        <el-dropdown v-if="!EN_LANG" class="dropdown-item" @command="handleChangeLanguage">
           <span class="el-dropdown-link">
             {{ langLabel }}
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>
-            <emqx-dropdown-menu class="header-menu">
-              <emqx-dropdown-item
+            <el-dropdown-menu class="header-menu">
+              <el-dropdown-item
                 v-for="item in langList"
                 :key="item.label"
                 :command="item.value"
                 :class="{ 'active-lang': item.value === lang }"
               >
                 {{ item.label }}
-              </emqx-dropdown-item>
-            </emqx-dropdown-menu>
+              </el-dropdown-item>
+            </el-dropdown-menu>
           </template>
-        </emqx-dropdown>
+        </el-dropdown>
 
-        <emqx-dropdown>
+        <el-dropdown>
           <span class="el-dropdown-link">
             <span class="user-bg">
               <i class="iconfont iconAdministration1"></i>
@@ -56,14 +53,14 @@
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <template #dropdown>
-            <emqx-dropdown-menu class="header-menu">
-              <emqx-dropdown-item @click="logout">{{ $t('common.logout') }}</emqx-dropdown-item>
-            </emqx-dropdown-menu>
+            <el-dropdown-menu class="header-menu">
+              <el-dropdown-item @click="logout">{{ $t('common.logout') }}</el-dropdown-item>
+            </el-dropdown-menu>
           </template>
-        </emqx-dropdown>
+        </el-dropdown>
       </div>
-    </template>
-  </emqx-header>
+    </div>
+  </el-header>
 </template>
 
 <script lang="ts" setup>
@@ -72,7 +69,7 @@ import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { downloadLogs } from '@/api/admin'
 import { useDownload } from '@/composables/useDownload'
-import useLang, { setLang } from '@/composables/useLang'
+import { useLang } from '@/composables/useLang'
 import { EN_LANG } from '@/config/index'
 
 const store = useStore()
@@ -95,9 +92,9 @@ const downloadLogsFile = () => {
 }
 
 const { langList } = useLang()
-const { changeLang } = setLang()
+const { changeLanguage } = useLang()
 const changeCurrentLang = (lang: string) => {
-  changeLang(lang)
+  changeLanguage(lang as 'zh' | 'en')
 }
 const lang = computed({
   get() {
@@ -120,28 +117,37 @@ const logout = async () => {
 
 const langLabel = computed(() => langList.find((item) => item.value === lang.value)?.label || '')
 
-const changeLanguage = (command: string) => {
+const handleChangeLanguage = (command: string) => {
   lang.value = command
 }
 </script>
 
 <style lang="scss">
-@import '@/styles/emqx-ui-variables.scss';
+@import '@/styles/ui-variables.scss';
 
 .header {
   .el-dropdown {
     color: #fff;
+    vertical-align: middle;
+  }
+
+  .header-container{
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items:  center;
   }
 }
 .dropdown-item {
   margin-left: 14px;
 }
 .header-menu {
-  .emqx-dropdown-item {
+
+  .el-dropdown-item {
     padding-left: 24px;
     padding-right: 24px;
   }
-  .emqx-dropdown-item {
+  .el-dropdown-item {
     display: flex;
     align-items: center;
   }

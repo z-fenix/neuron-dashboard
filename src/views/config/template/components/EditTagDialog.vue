@@ -9,10 +9,10 @@
     <TagFormCom ref="formRef" :data="tagData" :node-plugin-info="pluginMsg" edit />
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
           $t('common.submit')
-        }}</emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        }}</el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -22,7 +22,7 @@
 import type { PropType, Ref } from 'vue'
 import { computed, defineProps, defineEmits, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { ElDialog } from 'element-plus'
 import { updateTag } from '@/api/template'
 import TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
@@ -79,20 +79,20 @@ watch(showDialog, (val) => {
       getPluginInfo()
     }
   } else {
-    formRef.value.resetFields()
+    formRef.value?.resetFields()
   }
 })
 
 const submit = async () => {
   try {
-    await formRef.value.validate()
+    await formRef.value?.validate()
     isSubmitting.value = true
 
     const bodyData = handleTagValue(tagData.value)
 
     await updateTag(props.template, props.group, bodyData)
     showDialog.value = false
-    EmqxMessage.success(t('common.submitSuccess'))
+    ElMessage.success(t('common.submitSuccess'))
     emit('submitted')
   } catch (error) {
     console.error(error)

@@ -1,16 +1,16 @@
 <template>
   <el-dialog v-model="showDialog" :width="500" custom-class="common-dialog" :title="dialogTitle" :z-index="2000">
-    <emqx-form ref="formCom" :model="form" :rules="rules" @submit.prevent>
-      <emqx-form-item prop="name" :label="$t('common.name')" required>
-        <emqx-input v-model.trim="form.name" />
-      </emqx-form-item>
-    </emqx-form>
+    <el-form ref="formCom" :model="form" :rules="rules" label-position="top" @submit.prevent >
+      <el-form-item prop="name" :label="$t('common.name')" required>
+        <el-input v-model.trim="form.name" />
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">
           {{ $t('common.submit') }}
-        </emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        </el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -22,7 +22,7 @@ import { computed, defineProps, defineEmits, ref, watch } from 'vue'
 import { ElDialog } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { updateDriver } from '@/api/config'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { DriverDirection } from '@/types/enums'
 import { cloneDeep } from 'lodash'
 
@@ -73,7 +73,7 @@ const showDialog = computed({
 
 watch(showDialog, (val) => {
   if (!val) {
-    formCom.value.resetField()
+    formCom.value?.resetFields()
   } else {
     form.value = cloneDeep(props.node)
   }
@@ -85,7 +85,7 @@ const submit = async () => {
     isSubmitting.value = true
 
     await updateDriver({ name: props.nodeName, new_name: form.value.name })
-    EmqxMessage.success(t('common.updateSuccess'))
+    ElMessage.success(t('common.updateSuccess'))
     showDialog.value = false
     emit('updated')
   } catch (error) {

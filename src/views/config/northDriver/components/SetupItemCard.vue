@@ -8,7 +8,7 @@
       <p class="setup-item-name ellipsis">{{ data.name }}</p>
       <div class="setup-item-handlers">
         <AComWithDesc :content="$t('config.appConfig')">
-          <i class="iconfont iconsetting" @click.stop="goNodeConfig(data)"></i>
+          <el-icon  @click.stop="goNodeConfig(data)" style="margin-right: 8px;"><Setting /></el-icon>
         </AComWithDesc>
         <AComWithDesc :content="$t('config.dataStatistics')">
           <span @click.stop="isShowDataStatistics(data)">
@@ -29,34 +29,34 @@
             @click.stop="handleClickOperator('debugLogLevel')"
           />
         </AComWithDesc>
-        <emqx-dropdown v-else trigger="click" @command="handleClickOperator">
-          <AComWithDesc :content="$t('common.more')">
+        <el-dropdown v-else trigger="click" @command="handleClickOperator">
             <span class="el-dropdown-link" @click.stop>
-              <i class="el-icon-more" />
+              <AComWithDesc :content="$t('common.more')">
+                <el-icon><MoreFilled /></el-icon>
+              </AComWithDesc>
             </span>
-          </AComWithDesc>
           <template #dropdown>
-            <emqx-dropdown-menu>
-              <emqx-dropdown-item v-if="!isMonitorNode(data.name)" class="operation-item-wrap" command="edit">
-                <i class="el-icon-edit-outline operation-icon" />
+            <el-dropdown-menu>
+              <el-dropdown-item v-if="!isMonitorNode(data.name)" class="operation-item-wrap" command="edit">
+                <el-icon class="operation-icon"><Edit/></el-icon>
                 <span>{{ $t(`common.edit`) }}</span>
-              </emqx-dropdown-item>
-              <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
+              </el-dropdown-item>
+              <el-dropdown-item class="operation-item-wrap" command="debugLogLevel">
                 <img class="operation-image" src="~@/assets/images/debug-log-icon.png" alt="debug-log" />
                 <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
-              </emqx-dropdown-item>
-              <emqx-dropdown-item
+              </el-dropdown-item>
+              <el-dropdown-item
                 v-if="!isNotSupportRemoveNode(data.name)"
                 class="operation-item-wrap"
                 command="delete"
                 :disabled="data.pluginKind === PluginKind.Static"
               >
-                <i class="iconfont icondelete operation-icon" />
+                <el-icon class="operation-icon"><Delete/></el-icon>
                 <span>{{ $t(`common.delete`) }}</span>
-              </emqx-dropdown-item>
-            </emqx-dropdown-menu>
+              </el-dropdown-item>
+            </el-dropdown-menu>
           </template>
-        </emqx-dropdown>
+        </el-dropdown>
       </div>
     </div>
 
@@ -71,7 +71,7 @@
         </div>
       </div>
       <div class="common-flex">
-        <emqx-switch v-model="nodeStartStopStatus" @click.stop />
+        <el-switch v-model="nodeStartStopStatus" @click.stop />
       </div>
     </div>
     <div class="node-item-info-row">
@@ -96,12 +96,13 @@
 <script lang="ts" setup>
 import { computed, defineEmits, defineProps } from 'vue'
 import type { PropType } from 'vue'
+import {Edit,Delete, Setting,MoreFilled } from '@element-plus/icons-vue'
 import { useDriverStatus, useNodeStartStopStatus, dataStatistics, useDriverName } from '@/composables/config/useDriver'
 import useNorthDriver from '@/composables/config/useNorthDriver'
 import { PluginKind, NodeCatogery } from '@/types/enums'
 import type { DriverItemInList } from '@/types/config'
 import AComWithDesc from '@/components/AComWithDesc.vue'
-import DataStatisticsDrawer from '../../components/dataStatisticsDrawer.vue'
+import DataStatisticsDrawer from '../../components/DataStatisticsDrawer.vue'
 
 const emit = defineEmits(['toggleStatus', 'clickOperation'])
 

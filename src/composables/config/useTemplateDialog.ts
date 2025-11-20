@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { TemplateFormData } from '@/types/config'
 import { createTemplate, updateTemplate } from '@/api/template'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { cloneDeep } from 'lodash'
 
 export const useTemplateForm = () => {
@@ -50,13 +50,13 @@ export default (props: TemplateProps) => {
   })
 
   const initForm = async () => {
-    formRef.value.resetField()
+    formRef.value?.resetFields()
     templateForm.value = createTemplateForm()
   }
 
   const submitData = async () => {
     try {
-      await formRef.value.validate()
+      await formRef.value?.validate()
       isSubmitting.value = true
 
       const data = templateForm.value
@@ -64,11 +64,11 @@ export default (props: TemplateProps) => {
         await createTemplate(data)
 
         const message = !props.isImport ? t('common.createSuccess') : t('common.importSuccess')
-        EmqxMessage.success(message)
+        ElMessage.success(message)
       } else {
         // TODO: edit
         await updateTemplate(data)
-        EmqxMessage.success(t('common.updateSuccess'))
+        ElMessage.success(t('common.updateSuccess'))
       }
       return Promise.resolve()
     } catch (error) {

@@ -7,7 +7,7 @@ import type { Ref } from 'vue'
 import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useGetPluginMsgIdMap } from './usePlugin'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { cloneDeep } from 'lodash'
 import { randomString } from '@/utils/utils'
@@ -251,7 +251,7 @@ export default (props: Props) => {
         })
 
         await submitNodeConfig(node.value, bodyData)
-        EmqxMessage.success(t('common.submitSuccess'))
+        ElMessage.success(t('common.submitSuccess'))
         router.back()
       }
     } catch (error) {
@@ -271,7 +271,7 @@ export default (props: Props) => {
     await Promise.all([getPluginInfo(), getNodeConfig()])
     await initData()
     isLoading.value = false
-    formCom.value.form.clearValidate()
+    formCom.value.form?.clearValidate()
   })
 
   return {

@@ -1,14 +1,14 @@
 <template>
-  <emqx-row class="header-bar-container">
-    <emqx-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24" class="header-col">
+  <el-row class="header-bar-container">
+    <el-col :xl="24" :lg="24" :md="24" :sm="24" :xs="24" class="header-col">
       <div class="header-left">
         <slot name="left"></slot>
       </div>
       <div class="header-right">
         <slot name="right"></slot>
       </div>
-    </emqx-col>
-  </emqx-row>
+    </el-col>
+  </el-row>
 </template>
 
 <script lang="ts" setup>

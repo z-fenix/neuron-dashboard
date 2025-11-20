@@ -1,21 +1,21 @@
 <template>
   <div class="login-page">
     <div class="container">
-      <emqx-card shadow="never">
+      <el-card shadow="never">
         <img class="img-login" src="~@/assets/images/img-login.png" />
         <div class="login-main">
           <img class="img-logo" src="~@/assets/images/logo.png" alt="neuron-logo" width="141" />
-          <emqx-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
-            <emqx-form-item prop="userName">
-              <emqx-input v-model.trim="form.userName" type="text" :placeholder="$t('common.username')" />
-            </emqx-form-item>
-            <emqx-form-item prop="password">
-              <emqx-input v-model="form.password" type="password" :placeholder="$t('common.password')" />
-            </emqx-form-item>
-            <emqx-button type="primary" class="login" @click="login">{{ $t('common.login') }}</emqx-button>
-          </emqx-form>
+          <el-form ref="formCom" :model="form" :rules="rules" @keyup.enter="login">
+            <el-form-item prop="userName">
+              <el-input v-model.trim="form.userName" type="text" :placeholder="$t('common.username')" />
+            </el-form-item>
+            <el-form-item prop="password">
+              <el-input v-model="form.password" type="password" :placeholder="$t('common.password')" />
+            </el-form-item>
+            <el-button type="primary" class="login" @click="login">{{ $t('common.login') }}</el-button>
+          </el-form>
         </div>
-      </emqx-card>
+      </el-card>
     </div>
   </div>
 </template>
@@ -102,7 +102,7 @@ setLang()
   }
 
   $img-width: 360px;
-  .emqx-card {
+  .el-card {
     position: relative;
     height: 100%;
     padding-left: $img-width;
@@ -110,7 +110,7 @@ setLang()
     background: #0c283e;
   }
 
-  .emqx-card.el-card .el-card__body {
+  .el-card.el-card .el-card__body {
     box-sizing: border-box;
     height: 100%;
     padding: 64px 64px 61px;
@@ -131,7 +131,7 @@ setLang()
   .img-logo {
     margin: 0 auto 46px;
   }
-  .emqx-form-item {
+  .el-form-item {
     margin-bottom: 30px;
   }
   /*
@@ -139,7 +139,7 @@ setLang()
     license，用户管理和关于还没有相关接口，如果有相关接口了很快就可以写完
   */
 
-  .emqx-input .el-input__inner {
+  .el-input .el-input__inner {
     padding-left: 0;
     padding-right: 0;
     border: 1px solid transparent;
@@ -157,14 +157,14 @@ setLang()
       border-radius: 4px;
     }
   }
-  .emqx-form-item.is-error .el-input__inner,
-  .emqx-form-item.is-error .el-input__inner:focus {
+  .el-form-item.is-error .el-input__inner,
+  .el-form-item.is-error .el-input__inner:focus {
     border-top: 1px solid transparent !important;
     border-right: 1px solid transparent !important;
     border-left: 1px solid transparent !important;
   }
 
-  .emqx-button {
+  .el-button {
     display: block;
     width: 100%;
     margin-top: 40px;

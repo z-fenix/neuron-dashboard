@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="log">
+  <el-card class="log">
     <h3 class="card-title">{{ $t('admin.log') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div>
@@ -15,23 +15,23 @@
         </div>
         <div class="filter-item">
           <label>{{ $t('admin.logType') }}</label>
-          <emqx-select class="filter-select" v-model="logType" @change="refreshData">
-            <emqx-option v-for="{ value, label } in logTypeOptions" :key="value" :value="value" :label="label" />
-          </emqx-select>
+          <el-select class="filter-select" v-model="logType" @change="refreshData">
+            <el-option v-for="{ value, label } in logTypeOptions" :key="value" :value="value" :label="label" />
+          </el-select>
         </div>
       </div>
-      <emqx-button type="primary" @click="getLogs">{{ $t('common.submit') }}</emqx-button>
+      <el-button type="primary" @click="getLogs">{{ $t('common.submit') }}</el-button>
     </div>
     <div class="table-container">
-      <emqx-table :data="tableData" :empty-text="$t('common.emptyData')">
-        <emqx-table-column :label="$t('admin.log')">
+      <el-table :data="tableData" :empty-text="$t('common.emptyData')">
+        <el-table-column :label="$t('admin.log')">
           <template #default="{ row }">
             {{ row }}
           </template>
-        </emqx-table-column>
-      </emqx-table>
+        </el-table-column>
+      </el-table>
     </div>
-    <emqx-pagination
+    <el-pagination
       hide-on-single-page
       layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="pageController.num"
@@ -41,7 +41,7 @@
       @current-change="getLogs"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </el-card>
 </template>
 
 <script setup lang="ts">

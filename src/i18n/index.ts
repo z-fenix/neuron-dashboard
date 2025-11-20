@@ -1,7 +1,6 @@
 import type { Language } from '@/types/locale'
 import { createI18n } from 'vue-i18n'
 import store from '@/store'
-import { setLang } from '@/composables/useLang'
 
 const LangModules = ['data', 'common', 'config', 'admin', 'error', 'ekuiper', 'template']
 
@@ -14,7 +13,6 @@ const lang: LangModel = {
   zh: {},
 }
 
-const { initLang } = setLang()
 
 LangModules.forEach((module) => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -42,6 +40,5 @@ const i18n = createI18n({
   warnHtmlMessage: false,
 })
 
-initLang()
 
 export default i18n

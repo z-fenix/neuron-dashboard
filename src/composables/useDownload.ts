@@ -32,7 +32,12 @@ export const useDownload = () => {
         document.body.removeChild(link)
       } else {
         // IE 10+
-        navigator.msSaveBlob(new Blob([blobData]), name)
+        const navigatorWithMS = navigator as any
+        if (navigatorWithMS.msSaveBlob) {
+          navigatorWithMS.msSaveBlob(new Blob([blobData]), name)
+        } else {
+          ElMessage.error(t('common.browserNotSupported'))
+        }
       }
     }
   }

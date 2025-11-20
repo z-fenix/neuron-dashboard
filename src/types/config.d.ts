@@ -187,12 +187,14 @@ export interface GroupFormDefault {
    * Name
    */
   group: string
-  interval: number | null
+  interval: number | null,
+  new_name: Object
 }
 export interface GroupForm {
   /**
    * Name
    */
+  name: string,
   group: string
   interval: number | null
   node: string | null

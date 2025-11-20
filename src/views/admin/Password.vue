@@ -1,48 +1,48 @@
 <template>
-  <emqx-card class="about">
+  <el-card class="about">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('common.changePassword') }}</h3>
     </div>
-    <emqx-form ref="formRef" :model="formData" :rules="rules" class="pw-form" @submit.prevent>
-      <emqx-form-item prop="oldPass" :label="$t('common.oldPassword')" required>
-        <emqx-input
+    <el-form ref="formRef" label-position="top" :model="formData" :rules="rules" class="pw-form" @submit.prevent>
+      <el-form-item prop="oldPass" :label="$t('common.oldPassword')" required>
+        <el-input
           v-model.trim="formData.oldPass"
           type="password"
           show-password
           :placeholder="$t('common.oldPassword')"
         />
-      </emqx-form-item>
-      <emqx-form-item prop="newPass" :label="$t('common.newPassword')" required>
-        <emqx-input
+      </el-form-item>
+      <el-form-item prop="newPass" :label="$t('common.newPassword')" required>
+        <el-input
           v-model.trim="formData.newPass"
           type="password"
           show-password
           :placeholder="$t('common.newPassword')"
         />
-      </emqx-form-item>
-      <emqx-form-item prop="newPassConfirm" :label="$t('common.confirmPassword')" required>
-        <emqx-input
+      </el-form-item>
+      <el-form-item prop="newPassConfirm" :label="$t('common.confirmPassword')" required>
+        <el-input
           v-model.trim="formData.newPassConfirm"
           type="password"
           show-password
           :placeholder="$t('common.newPassword')"
         />
-      </emqx-form-item>
-    </emqx-form>
+      </el-form-item>
+    </el-form>
 
     <footer class="change-psw-footer">
-      <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+      <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">
         {{ $t('common.submit') }}
-      </emqx-button>
+      </el-button>
     </footer>
-  </emqx-card>
+  </el-card>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref, toRefs, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { changePassword } from '@/api/common'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { createCommonErrorMessage } from '@/utils/utils'
 import { useStore } from 'vuex'
 
@@ -128,9 +128,9 @@ watch(
       keys.forEach((key: string) => {
         const value = formState.formData[key]
         if (!value) {
-          formRef.value.form.clearValidate()
+          formRef.value.form?.clearValidate()
         } else {
-          formRef.value.form.validateField(key)
+          formRef.value.form?.validateField(key)
         }
       })
     })
@@ -142,8 +142,8 @@ const changeUserPassword = async () => {
     isSubmitting.value = true
     const { name, oldPass: old_pass, newPass: new_pass } = formState.formData
     await changePassword({ name, old_pass, new_pass })
-    EmqxMessage.success(t('common.changePwSuccessful'))
-    formRef.value.resetField()
+    ElMessage.success(t('common.changePwSuccessful'))
+    formRef.value?.resetFields()
   } catch (error) {
     console.log(error)
   } finally {
@@ -152,7 +152,7 @@ const changeUserPassword = async () => {
 }
 
 const submit = () => {
-  formRef.value.validate().then((valid) => {
+  formRef.value?.validate().then((valid:any) => {
     if (valid) {
       changeUserPassword()
     }

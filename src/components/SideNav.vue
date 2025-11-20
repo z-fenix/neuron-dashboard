@@ -1,13 +1,13 @@
 <template>
-  <emqx-menu class="el-menu-vertical-demo side-nav" router :default-active="actvieMenu">
+  <el-menu class="el-menu-vertical-demo side-nav" router :default-active="actvieMenu">
     <template v-for="(nav, index) in navList">
-      <emqx-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
+      <el-menu-item class="nav-item" v-if="!nav.subMenus" style="padding-left: 0" :key="index" :index="nav.to">
         <div class="nav-item-content">
           <i class="nav-icon iconfont" :class="nav.icon"></i>
           <span class="nav-label ellipsis">{{ $t(`${nav.label}`) }}</span>
         </div>
-      </emqx-menu-item>
-      <emqx-submenu v-else :key="nav.to" :index="nav.to">
+      </el-menu-item>
+      <el-sub-menu v-else :key="nav.to" :index="nav.to">
         <template #title>
           <div class="nav-item-content">
             <i class="nav-icon iconfont" :class="nav.icon"></i>
@@ -15,7 +15,7 @@
           </div>
         </template>
         <div class="sub-menu-list">
-          <emqx-menu-item
+          <el-menu-item
             class="nav-item"
             v-for="(subMenuItem, index) in nav.subMenus"
             :key="index"
@@ -24,15 +24,15 @@
             <div class="nav-item-content">
               <span class="nav-label ellipsis">{{ $t(`${subMenuItem.label}`) }}</span>
             </div>
-          </emqx-menu-item>
+          </el-menu-item>
         </div>
-      </emqx-submenu>
+      </el-sub-menu>
     </template>
-  </emqx-menu>
+  </el-menu>
 </template>
 
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent,ref,onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 
 export default defineComponent({
@@ -41,100 +41,95 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-const navList = computed(() => {
-  const navs = [
-    // {
-    //   to: '/overview',
-    //   label: 'common.home',
-    //   icon: 'iconattributed',
-    // },
-    {
-      to: '/monitoring/data',
-      label: 'data.monitoring',
-      icon: 'iconstatus',
-      subMenus: [
-        {
-          to: '/monitoring/data',
-          label: 'data.dataMonitoring',
-        },
-      ],
-    },
-    {
-      to: '/configuration',
-      label: 'config.config',
-      icon: 'iconconfig',
-      subMenus: [
-        {
-          to: '/configuration/south-driver',
-          label: 'config.southDeviceManagement',
-        },
-        {
-          to: '/configuration/north-driver',
-          label: 'config.northAppSetup',
-        },
-        {
-          to: '/configuration/template',
-          label: 'config.templateManagement',
-        },
-        {
-          to: '/configuration/plugin',
-          label: 'config.plugin',
-        },
-      ],
-    },
-    {
-      to: '/admin',
-      label: 'admin.admin',
-      icon: 'iconAdministration1',
-      subMenus: [
-        {
-          to: '/admin/change-password',
-          label: 'common.changePassword',
-        },
-        // {
-        //   to: '/admin/account-settings',
-        //   label: 'common.accountSettings',
-        // },
-        // {
-        //   to: '/admin/log',
-        //   label: ('admin.log'),
-        // },
-      ],
-    },
-  ]
-  return navs
-})
 
-const firstLevelRoutePathArr: Array<string> = []
-const secondLevelRoutePathArr: Array<string> = []
+const route = useRoute()
+const firstLevelRoutePathArr = ref<string[]>([])
+const secondLevelRoutePathArr = ref<string[]>([])
 
+const navList = [
+  {
+    to: '/monitoring/data',
+    label: 'data.monitoring',
+    icon: 'iconstatus',
+    subMenus: [
+      {
+        to: '/monitoring/data',
+        label: 'data.dataMonitoring',
+      },
+    ],
+  },
+  {
+    to: '/configuration',
+    label: 'config.config',
+    icon: 'iconconfig',
+    subMenus: [
+      {
+        to: '/configuration/south-driver',
+        label: 'config.southDeviceManagement',
+      },
+      {
+        to: '/configuration/north-driver',
+        label: 'config.northAppSetup',
+      },
+      {
+        to: '/configuration/plugin',
+        label: 'config.plugin',
+      },
+    ],
+  },
+  {
+    to: '/admin',
+    label: 'admin.admin',
+    icon: 'iconAdministration1',
+    subMenus: [
+      {
+        to: '/admin/change-password',
+        label: 'common.changePassword',
+      },
+    ],
+  },
+]
+
+// 计算活跃菜单
 const actvieMenu = computed(() => {
-  const currentPath = useRoute().path
-  let ret = secondLevelRoutePathArr.find((item) => currentPath.match(item))
-
-  if (ret) {
-    return ret
+  const currentPath = route.path
+  
+  // 先匹配二级路由
+  const secondLevelMatch = secondLevelRoutePathArr.value.find(item => 
+    currentPath.startsWith(item)
+  )
+  if (secondLevelMatch) {
+    return secondLevelMatch
   }
 
-  ret = firstLevelRoutePathArr.find((item) => currentPath.match(item))
-  return ret || ''
+  // 再匹配一级路由
+  const firstLevelMatch = firstLevelRoutePathArr.value.find(item => 
+    currentPath.startsWith(item)
+  )
+  
+  return firstLevelMatch || ''
 })
 
-const countRoutePath = () => {
-  navList.value.forEach((menu) => {
+// 初始化路由路径数组
+const initRoutePaths = () => {
+  navList.forEach((menu) => {
     if (menu.subMenus) {
       menu.subMenus.forEach((item) => {
-        if (item.to.match(/^\/[^/]+\/[^/]+/)) {
-          secondLevelRoutePathArr.push(item.to)
+        if (item.to.split('/').length > 2) {
+          // 二级或更深层级路由
+          secondLevelRoutePathArr.value.push(item.to)
         } else {
-          firstLevelRoutePathArr.push(item.to)
+          // 一级路由
+          firstLevelRoutePathArr.value.push(item.to)
         }
       })
     } else {
-      firstLevelRoutePathArr.push(menu.to)
+      firstLevelRoutePathArr.value.push(menu.to)
     }
   })
 }
 
-countRoutePath()
+onMounted(() => {
+  initRoutePaths()
+})
 </script>

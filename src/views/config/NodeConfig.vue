@@ -1,6 +1,6 @@
 <template>
-  <div class="node-config" v-emqx-loading="isLoading">
-    <emqx-card shadow="none" class="node-config-bd">
+  <div class="node-config" v-loading="isLoading">
+    <el-card  class="node-config-bd">
       <h3 class="card-title">{{ cardTitle }}</h3>
       <div class="bar-left common-flex">
         <p class="driver-name">
@@ -9,9 +9,9 @@
         </p>
       </div>
 
-      <emqx-form ref="formCom" :model="configForm">
+      <el-form ref="formCom" :model="configForm" label-position="top">
         <template v-for="field in fieldList" :key="field.key">
-          <emqx-row>
+          <el-row>
             <NodeConfigParamItem
               :ref="setParamRef"
               v-if="shouldFieldShow(field, configForm)"
@@ -21,22 +21,22 @@
               :default-data="defaultConfigData"
               @validateFileds="validateFileds"
             />
-          </emqx-row>
+          </el-row>
         </template>
-      </emqx-form>
+      </el-form>
 
       <template v-if="!isLoading && fieldList.length === 0">
         <div class="empty-placeholder">
-          <emqx-empty :description="$t('config.noConfigInfoDesc')" />
-          <emqx-button @click="cancel" size="small">{{ $t('common.back') }}</emqx-button>
+          <el-empty :description="$t('config.noConfigInfoDesc')" />
+          <el-button @click="cancel" size="small">{{ $t('common.back') }}</el-button>
         </div>
       </template>
-    </emqx-card>
-    <emqx-card v-if="!isLoading && fieldList.length > 0" shadow="none" class="node-config-ft">
-      <emqx-button type="primary" :loading="isSubmitting" @click="submit">{{ $t('common.submit') }}</emqx-button>
-      <emqx-button @click="cancel">{{ $t('common.cancel') }}</emqx-button>
-      <emqx-button @click.stop="reset">{{ $t('common.reset') }}</emqx-button>
-    </emqx-card>
+    </el-card>
+    <el-card v-if="!isLoading && fieldList.length > 0" shadow="never" class="node-config-ft">
+      <el-button type="primary" :loading="isSubmitting" @click="submit">{{ $t('common.submit') }}</el-button>
+      <el-button @click="cancel">{{ $t('common.cancel') }}</el-button>
+      <el-button @click.stop="reset">{{ $t('common.reset') }}</el-button>
+    </el-card>
   </div>
 </template>
 
@@ -86,7 +86,7 @@ const {
 .node-config {
   .node-config-ft {
     text-align: center;
-    .emqx-button {
+    .el-button {
       width: 130px;
     }
   }
@@ -94,7 +94,7 @@ const {
     margin-bottom: 24px;
     min-height: 200px;
   }
-  .emqx-row {
+  .el-row {
     padding-top: 16px;
   }
   .el-radio-group {

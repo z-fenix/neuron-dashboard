@@ -1,5 +1,5 @@
 <template>
-  <emqx-select
+  <el-select
     v-model="driver"
     clearable
     :size="size"
@@ -8,8 +8,8 @@
     :disabled="disabled"
     @change="changeDriver"
   >
-    <emqx-option v-for="item in driverList" :key="item.name" :value="item.name" :label="item.name" />
-  </emqx-select>
+    <el-option v-for="item in driverList" :key="item.name" :value="item.name" :label="item.name" />
+  </el-select>
 </template>
 
 <script lang="ts" setup>
@@ -24,7 +24,7 @@ const props = defineProps({
   modelValue: { type: String, default: '' },
   type: { type: Number as PropType<DriverDirection | null>, default: null },
   placeholder: { type: String, default: '' },
-  size: { type: String, default: '' },
+  size: { type: String, default: 'default' },
   disabled: { type: Boolean, default: false },
   width: { type: String, default: '220px' },
 })

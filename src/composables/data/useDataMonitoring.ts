@@ -11,7 +11,7 @@ import { useI18n } from 'vue-i18n'
 import { useStore } from 'vuex'
 import { useTagTypeSelect, useTagAttributeTypeSelect } from '@/composables/config/useAddTagCommon'
 import { debounce, cloneDeep } from 'lodash'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 
 export interface TagDataInTable extends TagDataInMonitoring {
   attribute: Array<number>
@@ -395,7 +395,7 @@ export default () => {
     if (isTheNodeDeleted) {
       await nodeIsDeleted(false)
       if (!isManualSelectNode.value) {
-        await EmqxMessage.error(t('data.nodeDeleted'))
+        await ElMessage.error(t('data.nodeDeleted'))
       }
     }
 
@@ -413,7 +413,7 @@ export default () => {
     if (isTheGroupExist) {
       await groupIsDeleted(false)
       if (!isManualSelectNode.value) {
-        await EmqxMessage.error(t('data.groupDeleted'))
+        await ElMessage.error(t('data.groupDeleted'))
       }
     }
 

@@ -6,31 +6,31 @@
     :title="$t(`${dialogTitle}`)"
     :z-index="2000"
   >
-    <emqx-form ref="formCom" :model="groupForm" :rules="groupFormRules">
-      <emqx-form-item prop="group" :label="$t('config.groupName')" required>
-        <emqx-input v-model.trim="groupForm.group" />
-      </emqx-form-item>
-      <emqx-form-item prop="interval" :label="$t('config.interval')" required>
-        <emqx-input v-model.number="groupForm.interval" :disabled="group && !isEdit">
+    <el-form ref="formCom" :model="groupForm" label-position="top" :rules="groupFormRules">
+      <el-form-item prop="group" :label="$t('config.groupName')" required>
+        <el-input v-model.trim="groupForm.group" />
+      </el-form-item>
+      <el-form-item prop="interval" :label="$t('config.interval')" required>
+        <el-input v-model.number="groupForm.interval" :disabled="group && !isEdit">
           <template #append>ms</template>
-        </emqx-input>
-      </emqx-form-item>
-    </emqx-form>
+        </el-input>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
         <!-- create | edit -->
         <template v-if="!group || (group && isEdit)">
-          <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
+          <el-button type="primary" size="small" :loading="isSubmitting" @click="submit">
             {{ $t(`${confirmBtnText}`) }}
-          </emqx-button>
-          <emqx-button v-if="!group || (group && isEdit)" size="small" @click="showDialog = false">
+          </el-button>
+          <el-button v-if="!group || (group && isEdit)" size="small" @click="showDialog = false">
             {{ $t('common.cancel') }}
-          </emqx-button>
+          </el-button>
         </template>
         <!-- view -->
-        <emqx-button v-else type="primary" size="small" @click="showDialog = false" :loading="isSubmitting">
+        <el-button v-else type="primary" size="small" @click="showDialog = false" :loading="isSubmitting">
           {{ $t('common.close') }}
-        </emqx-button>
+        </el-button>
       </span>
     </template>
   </el-dialog>
@@ -87,7 +87,7 @@ const confirmBtnText = computed(() => {
 
 watch(showDialog, async (val) => {
   nextTick(() => {
-    formCom.value.form.clearValidate()
+    formCom.value.form?.clearValidate()
   })
   if (!val) {
     resetFields()

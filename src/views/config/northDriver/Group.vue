@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="north-driver-group" v-emqx-loading="isListLoading">
+  <el-card class="north-driver-group" v-loading="isListLoading">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
@@ -11,41 +11,40 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="addSubscription">
+          <el-button size="small" type="primary" @click="addSubscription">
             {{ $t('config.addSubscription') }}
-          </emqx-button>
-          <emqx-button size="small" type="warning" :disabled="!subscriptionList.length" @click="clearSubscription">{{
+          </el-button>
+          <el-button size="small" type="warning" :disabled="!subscriptionList.length" @click="clearSubscription">{{
             $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!subCheckedList.length" @click="batchUnsubscribeGroups">{{
+          }}</el-button>
+          <el-button size="small" type="danger" :disabled="!subCheckedList.length" @click="batchUnsubscribeGroups">{{
             $t('common.delete')
-          }}</emqx-button>
+          }}</el-button>
         </div>
       </div>
     </div>
-    <emqx-table :data="subscriptionList" :empty-text="$t('common.emptyData')">
-      <emqx-table-column :width="28">
+    <el-table :data="subscriptionList" :empty-text="$t('common.emptyData')">
+      <el-table-column :width="28">
         <template #header>
-          <emqx-checkbox v-model="allChecked" />
+          <el-checkbox v-model="allChecked" />
         </template>
         <template #default="{ row }">
-          <emqx-checkbox v-model="row.checked" />
+          <el-checkbox v-model="row.checked" />
         </template>
-      </emqx-table-column>
-      <emqx-table-column label="No" :width="60">
-        <template #default="{ index }">{{ index + 1 }}</template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="group"></emqx-table-column>
-      <emqx-table-column :label="$t('config.deviceName')" prop="name">
+      </el-table-column>
+      <el-table-column :label="$t('common.No')" :width="60" type="index">
+      </el-table-column>
+      <el-table-column :label="$t('config.groupName')" prop="group"></el-table-column>
+      <el-table-column :label="$t('config.deviceName')" prop="name">
         <template #default="{ row }">{{ row.driver }}</template>
-      </emqx-table-column>
-      <emqx-table-column v-if="isMQTTPugin" :label="$t('config.topic')" show-overflow-tooltip>
+      </el-table-column>
+      <el-table-column v-if="isMQTTPugin" :label="$t('config.topic')" show-overflow-tooltip>
         <template #default="{ row }">{{ row?.params?.topic }}</template>
-      </emqx-table-column>
-      <emqx-table-column v-if="isGewuPugin" label="productKey">
+      </el-table-column>
+      <el-table-column v-if="isGewuPugin" label="productKey">
         <template #default="{ row }">{{ row?.params?.productKey }}</template>
-      </emqx-table-column>
-      <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
+      </el-table-column>
+      <el-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <AComWithDesc v-if="isMQTTPugin || isGewuPugin" :content="$t('common.edit')">
             <i class="el-icon-edit-outline" @click.stop="showEditGroupDialog(row)" />
@@ -54,9 +53,9 @@
             <i class="iconfont icondelete" @click="unsubscribeGroup(row)" />
           </AComWithDesc>
         </template>
-      </emqx-table-column>
-    </emqx-table>
-  </emqx-card>
+      </el-table-column>
+    </el-table>
+  </el-card>
   <AddSubscriptionDialog v-model="showAddSubscriptionDialog" :current-node="node" @submitted="getSubscriptionList" />
 
   <EditSubcriptionGroup

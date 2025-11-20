@@ -1,5 +1,5 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading" class="tag-page">
+  <el-card v-loading="isListLoading" class="tag-page">
     <h3 class="card-title">{{ $t('config.tagList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left">
@@ -10,15 +10,15 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-button size="small" type="primary" @click="goCreatePage">
+          <el-button size="small" type="primary" @click="goCreatePage">
             {{ $t('common.create') }}
-          </emqx-button>
-          <emqx-button size="small" type="warning" :disabled="!tagList.length" @click="clearTag">{{
+          </el-button>
+          <el-button size="small" type="warning" :disabled="!tagList.length" @click="clearTag">{{
             $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
+          }}</el-button>
+          <el-button size="small" type="danger" :disabled="!tagCheckedList.length" @click="batchDeleteTag">{{
             $t('common.delete')
-          }}</emqx-button>
+          }}</el-button>
           <KeywordSerachInput
             v-model="queryKeyword.name"
             class="search_input"
@@ -31,33 +31,33 @@
     </div>
 
     <div class="table-container">
-      <emqx-table :data="tagList" :empty-text="$t('common.emptyData')">
-        <emqx-table-column :width="28">
+      <el-table :data="tagList" :empty-text="$t('common.emptyData')">
+        <el-table-column :width="28">
           <template #header>
-            <emqx-checkbox v-model="allChecked" />
+            <el-checkbox v-model="allChecked" />
           </template>
           <template #default="{ row }">
-            <emqx-checkbox v-model="row.checked" />
+            <el-checkbox v-model="row.checked" />
           </template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('common.name')" prop="name"></emqx-table-column>
-        <emqx-table-column :label="$t('config.address')" prop="address"></emqx-table-column>
+        </el-table-column>
+        <el-table-column :label="$t('common.name')" prop="name"></el-table-column>
+        <el-table-column :label="$t('config.address')" prop="address"></el-table-column>
 
-        <emqx-table-column :label="$t('common.type')">
+        <el-table-column :label="$t('common.type')">
           <template #default="{ row }">{{ findTagTypeLabelByValue(row.type) }}</template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('common.attribute')">
+        </el-table-column>
+        <el-table-column :label="$t('common.attribute')">
           <template #default="{ row }">{{ getAttrStrByValue(row.attribute) }}</template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('config.decimal')">
+        </el-table-column>
+        <el-table-column :label="$t('config.decimal')">
           <template #default="{ row }">{{ tagDecimalValue(row.decimal) }}</template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('config.precision')">
+        </el-table-column>
+        <el-table-column :label="$t('config.precision')">
           <template #default="{ row }">{{ tagPrecisionValue(row.type, row.precision) }}</template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('config.desc')" prop="description" />
+        </el-table-column>
+        <el-table-column :label="$t('config.desc')" prop="description" />
 
-        <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
+        <el-table-column align="left" :label="$t('common.oper')" width="140px">
           <template #default="{ row }">
             <AComWithDesc :content="$t('common.edit')">
               <i class="el-icon-edit-outline" @click="editTag(row)" />
@@ -69,10 +69,10 @@
               <i class="iconfont icondelete" @click="delTag(row)" />
             </AComWithDesc>
           </template>
-        </emqx-table-column>
-      </emqx-table>
+        </el-table-column>
+      </el-table>
     </div>
-    <emqx-pagination
+    <el-pagination
       v-if="pageController.total > 50"
       layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="pageController.pageNum"
@@ -82,7 +82,7 @@
       @current-change="getAPageTagData"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </el-card>
   <EditTagDialog v-model="showEditDialog" :tag="currentTag" :node="node" @submitted="refreshTable" :group="groupName" />
 </template>
 

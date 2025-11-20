@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="group" v-emqx-loading="isListLoading">
+  <el-card class="group" v-loading="isListLoading">
     <h3 class="card-title">{{ $t('config.groupList') }}</h3>
     <div class="card-bar-under-title common-flex">
       <div class="bar-left common-flex">
@@ -11,28 +11,28 @@
       </div>
       <div class="btns common-flex">
         <div class="btn-group">
-          <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
-            <emqx-upload
+          <el-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+            <el-upload
               class="uploader-tag"
               :before-upload="importTagsByGroups"
               :show-file-list="false"
               action="placeholder"
             >
-              <emqx-button size="small">
+              <el-button size="small">
                 <i class="iconfont icon-import icondownload"></i>
                 <span>{{ $t('common.import') }}</span>
-              </emqx-button>
-            </emqx-upload>
+              </el-button>
+            </el-upload>
             <template #dropdown>
-              <emqx-dropdown-menu>
-                <emqx-button plain class="btn-download-temp" @click="downloadTemplate">
+              <el-dropdown-menu>
+                <el-button plain class="btn-download-temp" @click="downloadTemplate">
                   <span>{{ $t('config.downloadTemplate') }}</span>
-                </emqx-button>
-              </emqx-dropdown-menu>
+                </el-button>
+              </el-dropdown-menu>
             </template>
-          </emqx-dropdown>
+          </el-dropdown>
 
-          <emqx-button
+          <el-button
             size="small"
             class="export-tags--btn"
             :disabled="!groupCheckedList.length"
@@ -41,21 +41,21 @@
           >
             <i class="iconfont icon-import iconsubmit"></i>
             <span>{{ $t('common.export') }}</span>
-          </emqx-button>
-          <emqx-button size="small" type="primary" @click="addGroup">
+          </el-button>
+          <el-button size="small" type="primary" @click="addGroup">
             {{ $t('common.create') }}
-          </emqx-button>
-          <emqx-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
+          </el-button>
+          <el-button size="small" type="warning" :disabled="!groupList.length" @click="clearGroup">{{
             $t('common.clear')
-          }}</emqx-button>
-          <emqx-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
+          }}</el-button>
+          <el-button size="small" type="danger" :disabled="!groupCheckedList.length" @click="batchDeleteGroup">{{
             $t('common.delete')
-          }}</emqx-button>
+          }}</el-button>
         </div>
       </div>
     </div>
 
-    <emqx-table
+    <el-table
       :data="groupList"
       :empty-text="$t('common.emptyData')"
       :row-class-name="'table-row-click'"
@@ -63,27 +63,26 @@
       @sort-change="sortGroupListData"
       @row-click="goTagPage"
     >
-      <emqx-table-column :width="28">
+      <el-table-column :width="28">
         <template #header>
-          <emqx-checkbox v-model="allChecked" />
+          <el-checkbox v-model="allChecked" />
         </template>
         <template #default="{ row }">
-          <emqx-checkbox v-model="row.checked" @click.stop="() => {}" />
+          <el-checkbox v-model="row.checked" @click.stop="() => {}" />
         </template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('common.No')" :width="60">
-        <template #default="{ index }">{{ index + 1 }}</template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('config.groupName')" prop="name" sortable="custom">
+      </el-table-column>
+      <el-table-column :label="$t('common.No')" :width="60" type="index">
+      </el-table-column>
+      <el-table-column :label="$t('config.groupName')" prop="name" sortable="custom">
         <template #default="{ row }">
           <el-link type="primary" :underline="false" href="javascript:;" @click.stop="goTagPage(row)">
             {{ row.name }}
           </el-link>
         </template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('config.tagCounts')" prop="tag_count"></emqx-table-column>
-      <emqx-table-column :label="$t('config.interval')" prop="interval"></emqx-table-column>
-      <emqx-table-column align="left" :label="$t('common.oper')" width="140px">
+      </el-table-column>
+      <el-table-column :label="$t('config.tagCounts')" prop="tag_count"></el-table-column>
+      <el-table-column :label="$t('config.interval')" prop="interval"></el-table-column>
+      <el-table-column align="left" :label="$t('common.oper')" width="140px">
         <template #default="{ row }">
           <div class="operator-wrap">
             <AComWithDesc :content="$t('common.edit')">
@@ -97,9 +96,9 @@
             </AComWithDesc>
           </div>
         </template>
-      </emqx-table-column>
-    </emqx-table>
-  </emqx-card>
+      </el-table-column>
+    </el-table>
+  </el-card>
 
   <GroupDialog
     v-model="showGroupDialog"

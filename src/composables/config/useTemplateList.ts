@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import type { RawTemplateData, TemplateFormData } from '@/types/config'
 import { queryTemplateList, deleteTemplate, getTemplateDetailByName } from '@/api/template'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { MessageBoxConfirm } from '@/utils/element'
 import { useTemplateForm } from '@/composables/config/useTemplateDialog'
 import { useDownload } from '@/composables/useDownload'
@@ -73,7 +73,7 @@ export default () => {
       await MessageBoxConfirm() // Phase 2 support: t('template.deleteTemplateTip')
       const { name } = rowData
       await deleteTemplate(name)
-      EmqxMessage.success(t('common.operateSuccessfully'))
+      ElMessage.success(t('common.operateSuccessfully'))
       getTemplateList()
     } catch (error) {
       console.error(error)
@@ -96,7 +96,7 @@ export default () => {
   // import file
   const importFile = async (file: File) => {
     if (dataType(file) !== 'file') {
-      EmqxMessage.error(t('common.notJSONData'))
+      ElMessage.error(t('common.notJSONData'))
     }
 
     isImportTemplate.value = true
@@ -108,17 +108,17 @@ export default () => {
 
       const { name, plugin } = jsonData
       if (!name) {
-        EmqxMessage.error(t('template.missingNameInFile'))
+        ElMessage.error(t('template.missingNameInFile'))
       }
       if (!plugin) {
-        EmqxMessage.error(t('template.missingPluginInFile'))
+        ElMessage.error(t('template.missingPluginInFile'))
       }
       if (name && plugin) {
         editTemplateData.value = jsonData
         templateDialogVisible.value = true
       }
     } catch (error) {
-      EmqxMessage.error(t('common.jsonFormatError'))
+      ElMessage.error(t('common.jsonFormatError'))
     }
 
     // Capture uploader action

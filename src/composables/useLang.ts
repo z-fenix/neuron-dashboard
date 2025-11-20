@@ -1,46 +1,28 @@
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import locale from 'element-plus/lib/locale'
-import zhLang from 'element-plus/lib/locale/lang/zh-cn'
-import enLang from 'element-plus/lib/locale/lang/en'
-import store from '@/store'
-import i18n from '@/i18n/index'
+import { useI18n } from 'vue-i18n'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
+import en from 'element-plus/es/locale/lang/en'
 
-export const setLang = () => {
-  const initLang = () => {
-    if (store.state.lang === 'zh') {
-      locale.use(zhLang)
-    } else {
-      locale.use(enLang)
-    }
-  }
-  const changeLang = (lang: string) => {
-    store.commit('SET_LANG', lang)
-    i18n.global.locale.value = lang
-    initLang()
-  }
-  return {
-    initLang,
-    changeLang,
-  }
-}
-export default () => {
-  const $store = useStore()
+export const useLang = () => {
+  const store = useStore()
+  const { locale, t } = useI18n()
 
   const langList = [
-    {
-      label: '中文',
-      value: 'zh',
-    },
-    {
-      label: 'English',
-      value: 'en',
-    },
+    { label: '中文', value: 'zh' },
+    { label: 'English', value: 'en' },
   ]
 
-  const currentLang = computed(() => {
-    return $store.state.lang
+  const currentLang = computed(() => store.state.lang)
+
+  const elementLocale = computed(() => {
+    return currentLang.value === 'zh' ? zhCn : en
   })
+
+  const changeLanguage = (lang: 'zh' | 'en') => {
+    store.commit('SET_LANG', lang)
+    locale.value = lang
+  }
 
   const i18nContent = <T extends Record<string, any>, K extends keyof T>(obj: T, field: K): string => {
     if (field in obj && currentLang.value === 'zh') {
@@ -53,6 +35,11 @@ export default () => {
   return {
     langList,
     currentLang,
+    elementLocale,
+    changeLanguage,
     i18nContent,
+    t
   }
 }
+
+export default useLang

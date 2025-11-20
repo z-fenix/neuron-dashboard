@@ -1,14 +1,14 @@
 <template>
-  <emqx-breadcrumb v-if="isShowBreadcrumbs" separator="/">
-    <transition-group name="breadcrumb" mode="out-in">
-      <emqx-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
+  <el-breadcrumb v-if="isShowBreadcrumbs" separator="/" class="heard-breadcrumb">
+    <transition-group name="breadcrumb">
+      <el-breadcrumb-item v-for="(item, index) in levelList" :key="item.path">
         <span v-if="item.redirect === 'noRedirect' || index === levelList.length - 1" class="no-redirect">
           {{ $t(`${item.meta.title}`) }}
         </span>
         <a v-else @click.prevent="onHandleLink(item)">{{ $t(`${item.meta.title}`) }}</a>
-      </emqx-breadcrumb-item>
+      </el-breadcrumb-item>
     </transition-group>
-  </emqx-breadcrumb>
+  </el-breadcrumb>
 </template>
 
 <script lang="ts">
@@ -129,9 +129,8 @@ const onHandleLink = (item: any) => {
 <style lang="scss" scoped>
 .nav-breadcrumb {
   height: 32px;
-  background: #fff;
   line-height: 32px;
   border-bottom: 1px solid #e4e7ed;
-  padding: 0 20px;
+  padding: 20px 0;
 }
 </style>

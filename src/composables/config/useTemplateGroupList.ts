@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { MessageBoxConfirm } from '@/utils/element'
 import { queryGroupList, deleteGroup, addGroup, queryTagList, addTag } from '@/api/template'
 import type { GroupData, PluginInfo } from '@/types/config'
@@ -73,13 +73,13 @@ export default (pluginInfo: PluginInfo) => {
     await MessageBoxConfirm()
 
     await deleteGroup(template.value, name)
-    EmqxMessage.success(t('common.operateSuccessfully'))
+    ElMessage.success(t('common.operateSuccessfully'))
     getGroupList()
   }
 
   const delGroupList = async (list: Array<GroupData>) => {
     await Promise.all(list.map(({ name }) => deleteGroup(template.value, name)))
-    EmqxMessage.success(t('common.operateSuccessfully'))
+    ElMessage.success(t('common.operateSuccessfully'))
     getGroupList()
   }
 

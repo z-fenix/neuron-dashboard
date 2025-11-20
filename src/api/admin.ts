@@ -14,9 +14,32 @@ export const queryLog = (data: {
 }
 
 export const queryLicense = (): Promise<AxiosResponse<License & { error: number }>> => {
-  return http.get('/license', {
+  /** return http.get('/license', {
     _handleErrorSelf: true,
-  } as AxiosRequestConfig)
+  } as AxiosRequestConfig) */
+  return Promise.resolve({
+    data: {
+      license_type: 'premium',
+      valid: true,
+      valid_since: '2024-01-01',
+      valid_until: '2099-12-31',
+      max_nodes: 100,
+      max_node_tags: 500,
+      enabled_plugins: [],
+      used_nodes: 0,
+      used_tags: 0,
+      hardware_token: '',
+      object: 'license',
+      email_address: 'user@example.com',
+      nodesUsage: 0,
+      tagsUsage: 0,
+      error: 0,
+    },
+    status: 200,
+    statusText: 'OK',
+    headers: {},
+    config: {} as AxiosRequestConfig
+  } as AxiosResponse<License & { error: number }>);
 }
 
 /**
@@ -40,12 +63,25 @@ export const queryVersion = (): Promise<AxiosResponse<any>> => {
   return http.get('/version')
 }
 export const queryHardwareToken = (): Promise<AxiosResponse<any>> => {
-  return http.get('/hwtoken')
+  // return http.get('/hwtoken')
+  return Promise.resolve({
+    data: {
+      token: '',
+      device_id: 'device-abc123',
+      generated_at: '2024-01-15T10:30:00Z',
+      expires_at: '2024-12-31T23:59:59Z',
+      status: 'active',
+    },
+    status: 200,
+    statusText: 'OK',
+    headers: {},
+    config: {} as AxiosRequestConfig
+  } as AxiosResponse<any>)
 }
 
 export const downloadLogs = (): Promise<AxiosResponse<any>> => {
   return http({
-    url: '/logs',
+    url: '/log/file',
     method: 'get',
     responseType: 'blob',
     timeout: 1800000,

@@ -1,10 +1,10 @@
 <template>
   <el-dialog v-model="showDialog" :width="500" custom-class="common-dialog" :title="dialogTitle" :z-index="2000">
-    <emqx-form ref="formRef" :model="templateForm" :rules="rules">
-      <emqx-form-item prop="name" :label="$t('common.name')" required>
-        <emqx-input v-model.trim="templateForm.name" />
-      </emqx-form-item>
-      <emqx-form-item prop="plugin" :label="$t('config.plugin')" required>
+    <el-form ref="formRef" label-position="top" :model="templateForm" :rules="rules">
+      <el-form-item prop="name" :label="$t('common.name')" required>
+        <el-input v-model.trim="templateForm.name" />
+      </el-form-item>
+      <el-form-item prop="plugin" :label="$t('config.plugin')" required>
         <!-- :types="SOUTH_DRIVER_NODE_TYPE" -->
         <PluginListSelector
           v-model="templateForm.plugin"
@@ -13,14 +13,14 @@
           width="100%"
           :placeholder="$t('config.selectPlugin')"
         />
-      </emqx-form-item>
-    </emqx-form>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">
           {{ $t('common.create') }}
-        </emqx-button>
-        <emqx-button size="small" @click="cancel">{{ $t('common.cancel') }}</emqx-button>
+        </el-button>
+        <el-button size="small" @click="cancel">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -67,7 +67,7 @@ const showDialog = computed({
 
 watch(showDialog, (val) => {
   nextTick(() => {
-    formRef.value.form.clearValidate()
+    formRef.value.form?.clearValidate()
   })
   if (!val) {
     initForm()

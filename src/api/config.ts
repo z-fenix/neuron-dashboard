@@ -112,10 +112,10 @@ export const sendCommandToNode = (nodeName: string, command: NodeOperationComman
 export const queryNodeState = (nodeName?: string) => {
   const params = nodeName
     ? {
-        params: {
-          node: nodeName,
-        },
-      }
+      params: {
+        node: nodeName,
+      },
+    }
     : {}
   return http.get('/node/state', params)
 }
@@ -185,7 +185,7 @@ export const queryNodeConfig = async (node: string) => {
 }
 
 export const updateNodeLogLevelToDebug = (nodeName: string) => {
-  return http.put('/log/level', { node: nodeName })
+  return http.put('/log/level', { node: nodeName, level: 'debug' })
 }
 
 /* GROUP */

@@ -8,7 +8,7 @@ import { DriverDirection, NodeOperationCommand, NodeState } from '@/types/enums'
 import { NORTH_DRIVER_NODE_TYPE, SOUTH_DRIVER_NODE_TYPE } from '@/utils/constants'
 import { computed, ref, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { statusIconClassMap, statusTextMap, connectionStatusTextMap, nodeTypeClassMap } from '@/utils/driver'
 
 export const useDriverStatus = (props: { data: DriverItemInList }) => {
@@ -226,7 +226,7 @@ export const useNodeDebugLogLevel = () => {
   const modifyNodeLogLevelToDebug = async (nodeName: string) => {
     try {
       await updateNodeLogLevelToDebug(nodeName)
-      EmqxMessage.success(t('config.modifyNodeLogLevelSuc'))
+      ElMessage.success(t('config.modifyNodeLogLevelSuc'))
       return Promise.resolve()
     } catch (error) {
       return Promise.reject()

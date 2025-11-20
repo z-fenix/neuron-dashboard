@@ -1,21 +1,21 @@
 <template>
-  <emqx-card class="about" v-emqx-loading="isDataLoading">
+  <el-card class="about" v-loading="isDataLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('common.about') }}</h3>
     </div>
     <div>
-      <emqx-descriptions :column="1">
-        <emqx-descriptions-item :label="$t('admin.version')">
+      <el-descriptions :column="1">
+        <el-descriptions-item :label="$t('admin.version')">
           {{ versionData.version }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.systemStatus')">{{
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.systemStatus')">{{
           $t(`${systemStatusText}`)
-        }}</emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.systemRunningTime')">
+        }}</el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.systemRunningTime')">
           {{ systemRunningTime }}
-        </emqx-descriptions-item>
+        </el-descriptions-item>
 
-        <emqx-descriptions-item :label="$t('admin.memoryUsage')">
+        <el-descriptions-item :label="$t('admin.memoryUsage')">
           <el-progress
             :stroke-width="14"
             :percentage="generalStatistics.memPercent"
@@ -26,16 +26,16 @@
               {{ generalStatistics.memUsedBytes }} / {{ generalStatistics.memTotalBytes }}</span
             >
           </el-progress>
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.hwToken')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.hwToken')">
           {{ hwToken }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.builtDate')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.builtDate')">
           {{ versionData.build_date }}
-        </emqx-descriptions-item>
-      </emqx-descriptions>
+        </el-descriptions-item>
+      </el-descriptions>
     </div>
-  </emqx-card>
+  </el-card>
 </template>
 
 <script setup lang="ts">
@@ -47,8 +47,9 @@ import { secondToTime } from '@/utils/time'
 import { formatMemory } from '@/utils/utils'
 import useLang from '@/composables/useLang'
 import { NodeCatogery } from '@/types/enums'
-
+import { useI18n } from 'vue-i18n'
 const { currentLang } = useLang()
+const { t } = useI18n()
 
 const isDataLoading = ref(false)
 
@@ -72,7 +73,7 @@ const generalStatistics = reactive({
 let timer: undefined | number
 
 const systemRunningTime = computed(() => {
-  return secondToTime(Number(generalStatistics.systemRunningTime))
+  return secondToTime(t,Number(generalStatistics.systemRunningTime))
 })
 const systemStatusText = computed(() => {
   return generalStatistics.systemStatus === '0' ? 'common.normal' : 'common.exceptions'

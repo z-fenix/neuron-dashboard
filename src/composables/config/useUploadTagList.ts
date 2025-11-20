@@ -4,7 +4,7 @@ import type { TagType } from '@/types/enums'
 import { TagAttributeType } from '@/types/enums'
 import { FILLER_IN_TAG_ATTR } from '@/utils/constants'
 import { getErrorMsg, matchObjShape, popUpErrorMessage } from '@/utils/utils'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { useTagTypeSelect, useTagAttributeTypeSelect, createTagForm } from '@/composables/config/useAddTagCommon'
 import useWriteDataCheckNParse from '@/composables/data/useWriteDataCheckNParse'
@@ -27,7 +27,7 @@ export default (pluginInfo: PluginInfo) => {
   // Check excel colunm required fileds in the init state
   const checkTagListInTableFile = (data: Array<TagForm>): boolean => {
     if (!data.length) {
-      EmqxMessage.warning(t('config.validTableError'))
+      ElMessage.warning(t('config.validTableError'))
       return false
     }
 
@@ -43,7 +43,7 @@ export default (pluginInfo: PluginInfo) => {
     let requireFields = {}
 
     if (!data[0]?.attribute) {
-      EmqxMessage.warning(t('config.errorTableError'))
+      ElMessage.warning(t('config.errorTableError'))
       return false
     }
     const attr = getAttrTotalValueByStr(String(data[0].attribute), FILLER_IN_TAG_ATTR)
@@ -57,7 +57,7 @@ export default (pluginInfo: PluginInfo) => {
     }
 
     if (!matchObjShape(data[0], requireFields)) {
-      EmqxMessage.warning(t('config.errorTableError'))
+      ElMessage.warning(t('config.errorTableError'))
       return false
     }
     return true
@@ -92,12 +92,12 @@ export default (pluginInfo: PluginInfo) => {
         const type = findTypeValueByLabel(typeLabel)
 
         if (!type || !attr) {
-          EmqxMessage.error(`${t('config.tableRowDataError', { rowNum: startIndex })} ${t('config.errorTableError')}`)
+          ElMessage.error(`${t('config.tableRowDataError', { rowNum: startIndex })} ${t('config.errorTableError')}`)
           reject()
           break
         }
         if (!checkTagType(type)) {
-          EmqxMessage.error(
+          ElMessage.error(
             t('config.tagTypeError', {
               typesStr: pluginInfo.tag_type.map((item) => findTypeLabelByValue(item)).join(', '),
             }),
@@ -111,7 +111,7 @@ export default (pluginInfo: PluginInfo) => {
 
         // vaild address: `attribute` isnot includes `Static`
         if (!isIncludeStaticAttr && tagRegex && !tagRegex.test(address)) {
-          EmqxMessage.error(`${t('config.errorTableAddress', { rowNum: startIndex, name })}`)
+          ElMessage.error(`${t('config.errorTableAddress', { rowNum: startIndex, name })}`)
           reject()
           break
         }
@@ -122,7 +122,7 @@ export default (pluginInfo: PluginInfo) => {
             const trueValue = String(value)
             await checkWriteData(type, trueValue)
           } catch (error) {
-            EmqxMessage.error(`${t('config.errorStaticWithValue', { rowNum: startIndex, name })}`)
+            ElMessage.error(`${t('config.errorStaticWithValue', { rowNum: startIndex, name })}`)
             reject()
             break
           }
@@ -155,12 +155,12 @@ export default (pluginInfo: PluginInfo) => {
   const handlePartialSuc = (errIndex: number, errorNum: number) => {
     if (errIndex === 0) {
       if (errorNum === 2405) {
-        EmqxMessage.error(t('error.importTag2405'))
+        ElMessage.error(t('error.importTag2405'))
       } else {
         popUpErrorMessage(errorNum)
       }
     } else {
-      EmqxMessage.error(t('config.partialUploadFailed', { reason: getErrorMsg(errorNum), errorRow: errIndex + 1 + 1 }))
+      ElMessage.error(t('config.partialUploadFailed', { reason: getErrorMsg(errorNum), errorRow: errIndex + 1 + 1 }))
     }
   }
 
@@ -172,7 +172,7 @@ export default (pluginInfo: PluginInfo) => {
     return new Promise((resolve, reject) => {
       Promise.all(requestList)
         .then(() => {
-          EmqxMessage.success(t('config.uploadSuc'))
+          ElMessage.success(t('config.uploadSuc'))
           resolve(true)
         })
         .catch((error: any) => {

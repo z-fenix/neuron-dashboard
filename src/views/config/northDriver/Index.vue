@@ -1,10 +1,10 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <el-card v-loading="isListLoading">
     <ViewHeaderBar>
       <template v-slot:left>
-        <emqx-button type="primary" size="small" icon="iconfont iconcreate" class="header-item btn" @click="addConfig">
+        <el-button type="primary"  :icon="Plus" class="header-item btn" @click="addConfig">
           {{ $t('config.addApplication') }}
-        </emqx-button>
+        </el-button>
       </template>
       <template v-slot:right>
         <ListCardSwitch v-model="showType" @change="changeListShowMode" />
@@ -12,18 +12,18 @@
     </ViewHeaderBar>
 
     <ul v-if="showType === 'card'" class="setup-list">
-      <emqx-row :gutter="24">
-        <emqx-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
+      <el-row :gutter="24">
+        <el-col :span="8" v-for="(item, index) in northDriverList" :key="item.name" tag="li" class="setup-item">
           <SetupItemCard
             :data="item"
             @toggle-status="setNodeStartStopStatus(item, $event, index)"
             @clickOperation="handleClickOperator($event, item)"
           />
-        </emqx-col>
-      </emqx-row>
+        </el-col>
+      </el-row>
     </ul>
 
-    <emqx-table
+    <el-table
       v-if="showType === 'list'"
       :data="northDriverList"
       :empty-text="$t('common.emptyData')"
@@ -32,25 +32,25 @@
       @sort-change="sortDataByKey"
       @row-click="goGroupPage"
     >
-      <emqx-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
+      <el-table-column :label="$t('common.name')" prop="name" sortable="custom" show-overflow-tooltip>
         <template #default="{ row }">
           <span v-if="isMonitorNode(row.name)">{{ row.name }}</span>
-          <el-link v-else type="primary" :underline="false" href="javascript:;" @click.stop="goGroupPage(row, $event)">
+          <el-link v-else type="primary" :underline="false" href="javascript:;" @click.stop="goGroupPage(row)">
             {{ row.name }}
           </el-link>
         </template>
-      </emqx-table-column>
+      </el-table-column>
       <!--  workStatus-->
-      <emqx-table-column :label="$t('config.workStatus')" prop="statusText" sortable="custom">
+      <el-table-column :label="$t('config.workStatus')" prop="statusText" sortable="custom">
         <template #default="{ row }">
           <svg class="iconfont icon-svg" aria-hidden="true">
             <use :xlink:href="`#${getNodeValue(row).statusIcon.value}`" />
           </svg>
           {{ getNodeValue(row).statusText.value }}
         </template>
-      </emqx-table-column>
+      </el-table-column>
       <!-- connectionStatus -->
-      <emqx-table-column
+      <el-table-column
         :label="$t('config.connectionStatus')"
         prop="connectionStatusText"
         sortable="custom"
@@ -59,25 +59,25 @@
         <template #default="{ row }">
           {{ getNodeValue(row).connectionStatusText.value }}
         </template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
-      <emqx-table-column align="left" :label="$t('common.oper')" width="180px">
+      </el-table-column>
+      <el-table-column :label="$t('config.plugin')" prop="plugin" sortable="custom" />
+      <el-table-column align="left" :label="$t('common.oper')" width="180px">
         <template #default="{ row, index }">
           <div class="operator-wrap">
             <AComWithDesc :content="countNodeStartStopStatus(row) ? $t('common.stop') : $t('common.start')">
-              <i
-                :class="countNodeStartStopStatus(row) ? 'el-icon-video-pause' : 'el-icon-video-play'"
-                class="operation-icon"
-                @click.stop="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)"
-              />
+              <el-icon  class="operation-icon" @click.stop="setNodeStartStopStatus(row, !countNodeStartStopStatus(row), index)">
+                  <VideoPause v-if="countNodeStartStopStatus(row)"/>
+                  <VideoPlay v-else/>
+                </el-icon>
             </AComWithDesc>
             <AComWithDesc :content="$t('config.appConfig')">
-              <i class="iconfont iconsetting operation-icon" @click.stop="goNodeConfig(row)" />
+              <el-icon class="operation-icon" @click.stop="goNodeConfig(row)"><Setting /></el-icon>
             </AComWithDesc>
 
             <AComWithDesc :content="$t('config.dataStatistics')">
               <span @click.stop="handleClickOperator('dataStatistics', row)">
                 <img
+                  :size="18"
                   class="operation-image icon-image img-statistic-log"
                   src="~@/assets/images/statistics.png"
                   alt="debug-log"
@@ -85,44 +85,44 @@
               </span>
             </AComWithDesc>
 
-            <emqx-dropdown trigger="click" @command="handleClickOperator($event, row)">
-              <AComWithDesc :content="$t('common.more')">
+            <el-dropdown trigger="click" @command="handleClickOperator($event, row)">
                 <span class="el-dropdown-link" @click.stop>
-                  <i class="el-icon-more operation-icon" />
+                  <AComWithDesc :content="$t('common.more')">
+                    <el-icon><MoreFilled /></el-icon>
+                  </AComWithDesc>
                 </span>
-              </AComWithDesc>
               <template #dropdown>
-                <emqx-dropdown-menu>
-                  <emqx-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
-                    <i class="el-icon-edit-outline operation-icon" />
+                <el-dropdown-menu>
+                  <el-dropdown-item v-if="!isMonitorNode(row.name)" class="operation-item-wrap" command="edit">
+                    <el-icon class="operation-icon"><Edit/></el-icon>
                     <span>{{ $t(`common.edit`) }}</span>
-                  </emqx-dropdown-item>
-                  <emqx-dropdown-item class="operation-item-wrap" command="debugLogLevel">
+                  </el-dropdown-item>
+                  <el-dropdown-item class="operation-item-wrap" command="debugLogLevel">
                     <img
                       class="operation-image img-debug-log"
                       src="~@/assets/images/debug-log-icon.png"
                       alt="debug-log"
                     />
                     <span>{{ $t(`config.updateDebugLogLevel`) }}</span>
-                  </emqx-dropdown-item>
-                  <emqx-dropdown-item
+                  </el-dropdown-item>
+                  <el-dropdown-item
                     v-if="!isNotSupportRemoveNode(row.name)"
                     command="delete"
                     class="operation-item-wrap"
                   >
-                    <i class="iconfont icondelete operation-icon" />
+                    <el-icon class="operation-icon"><Delete/></el-icon>
                     <span>{{ $t(`common.delete`) }}</span>
-                  </emqx-dropdown-item>
-                </emqx-dropdown-menu>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
               </template>
-            </emqx-dropdown>
+            </el-dropdown>
           </div>
         </template>
-      </emqx-table-column>
-    </emqx-table>
+      </el-table-column>
+    </el-table>
 
-    <emqx-empty v-if="!isListLoading && northDriverList.length === 0" />
-  </emqx-card>
+    <el-empty v-if="!isListLoading && northDriverList.length === 0" />
+  </el-card>
 
   <DriverDialog v-model="showDialog" :type="DriverDirection.North" @submitted="getNorthDriverList" />
 
@@ -162,15 +162,16 @@ import { DriverDirection, NodeCatogery } from '@/types/enums'
 import DriverDialog from '@/views/config/components/DriverDialog.vue'
 import EditNodeNameDialog from '@/views/config/components/EditNodeNameDialog.vue'
 import SetupItemCard from './components/SetupItemCard.vue'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
+import { Plus,Edit,Delete,VideoPause,VideoPlay,Setting,MoreFilled } from '@element-plus/icons-vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import ListCardSwitch from '@/components/ListCardSwitch.vue'
 import AComWithDesc from '@/components/AComWithDesc.vue'
-import DataStatisticsDrawer from '../components/dataStatisticsDrawer.vue'
+import DataStatisticsDrawer from '../components/DataStatisticsDrawer.vue'
 import { isTheSameParentRoute } from '@/utils/utils'
 
 export default defineComponent({
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter(to:any, from:any, next:any) {
     const isSameParentRoute = isTheSameParentRoute(from, to)
     if (!isSameParentRoute) {
       store.commit('SET_LIST_SHOW_TYPE', 'list')
@@ -216,7 +217,7 @@ const setNodeStartStopStatus = async (node: DriverItemInList, status: boolean, n
   try {
     const ret = await toggleNodeStartStopStatus(node, status)
     const message = status ? t('config.runSuc') : t('config.stopSuc')
-    EmqxMessage.success(message)
+    ElMessage.success(message)
     if (typeof ret === 'object') {
       northDriverList.value.splice(nodeIndex, 1, ret)
     } else {

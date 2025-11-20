@@ -1,13 +1,13 @@
 <template>
-  <emqx-select
+  <el-select
     v-model="selectedValue"
     multiple
     :collapse-tags="collapseTags"
     :placeholder="$t('common.pleaseSelect')"
     @change="change"
   >
-    <emqx-option v-for="item in tagAttributeTypeOptList" :key="item.value" :label="item.label" :value="item.value" />
-  </emqx-select>
+    <el-option v-for="item in tagAttributeTypeOptList" :key="item.value" :label="item.label" :value="item.value" />
+  </el-select>
 </template>
 
 <script lang="ts" setup>

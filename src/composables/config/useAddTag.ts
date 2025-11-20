@@ -3,7 +3,7 @@ import type { TagFormItem, AddTagListForm } from '@/types/config'
 import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
 import { getErrorMsg, popUpErrorMessage } from '@/utils/utils'
@@ -47,14 +47,14 @@ export default () => {
   const handlePartialSuc = (errIndex: number, errorNum: number) => {
     if (errIndex === 0) {
       if (errorNum === 2405) {
-        EmqxMessage.error(t('error.addTagByNode2405'))
+        ElMessage.error(t('error.addTagByNode2405'))
       } else {
         popUpErrorMessage(errorNum)
       }
       return
     }
 
-    EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
+    ElMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
     formData.value.tagList = formData.value.tagList.slice(errIndex)
   }
 
@@ -88,7 +88,7 @@ export default () => {
       isSubmitting.value = true
       await validateTagForm()
       await addTags()
-      EmqxMessage.success(t('common.createSuccess'))
+      ElMessage.success(t('common.createSuccess'))
       router.push({
         name: 'SouthDriverGroupTag',
       })

@@ -9,10 +9,10 @@
     <TagFormCom ref="formRef" :data="tagData" :node-plugin-info="pluginMsg" edit />
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">{{
           $t('common.submit')
-        }}</emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        }}</el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -21,7 +21,7 @@
 <script lang="ts" setup>
 import type { PropType, Ref } from 'vue'
 import { computed, defineProps, defineEmits, ref, watch } from 'vue'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { ElDialog } from 'element-plus'
 import TagFormCom from './TagForm.vue'
 import type { PluginInfo, TagData } from '@/types/config'
@@ -36,7 +36,7 @@ const props = defineProps({
     required: true,
   },
   tag: {
-    type: Object as PropType<TagData>,
+    type: Object ,
     required: true,
   },
   node: {
@@ -72,27 +72,27 @@ const showDialog = computed({
 
 watch(showDialog, (val) => {
   if (val) {
-    tagData.value = { ...props.tag }
+    tagData.value = { ...props.tag } as TagData
 
     if (!pluginMsg.value) {
       getPluginInfo()
     }
   } else {
-    formRef.value.resetFields()
+    formRef.value?.resetFields()
   }
 })
 
 const { handleTagValue } = useHandleTagValue()
 const submit = async () => {
   try {
-    await formRef.value.validate()
+    await formRef.value?.validate()
     isSubmitting.value = true
 
     const bodyData = handleTagValue(tagData.value)
     await updateTag(props.node, props.group, bodyData)
 
     showDialog.value = false
-    EmqxMessage.success(t('common.submitSuccess'))
+    ElMessage.success(t('common.submitSuccess'))
     emit('submitted')
   } catch (error) {
     console.error(error)

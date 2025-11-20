@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { debounce } from 'lodash'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { deleteTag, queryTagList } from '@/api/template'
 import type { TagData, TagForm } from '@/types/config'
 import usePaging from '@/composables/usePaging'
@@ -106,7 +106,7 @@ export default () => {
       tags: list.map(({ name }) => name),
     }
     await deleteTag(params)
-    EmqxMessage.success(t('common.operateSuccessfully'))
+    ElMessage.success(t('common.operateSuccessfully'))
     refreshTable()
   }
 

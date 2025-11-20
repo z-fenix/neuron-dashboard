@@ -1,6 +1,6 @@
 <template>
-  <emqx-col :span="paramInfo.type === TypeOfPluginParam.Array ? 24 : 12">
-    <emqx-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="isFieldRequired">
+  <el-col :span="paramInfo.type === TypeOfPluginParam.Array ? 24 : 12">
+    <el-form-item class="node-config-param-item" :rules="rules" :prop="paramKey" :required="isFieldRequired">
       <template #label>
         <span>{{ showLabel(paramInfo) }}</span>
         <el-popover
@@ -17,57 +17,57 @@
       </template>
       <!-- Number -->
       <span v-if="paramInfo.type === TypeOfPluginParam.Int">
-        <emqx-input
+        <el-input
           v-if="!isParamHexadecimalBase(paramInfo)"
           v-model.number="inputValue"
           :placeholder="String(defaultData[paramKey] || '')"
         />
-        <emqx-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey])" />
+        <el-input v-else v-model="inputValue" :placeholder="String(defaultData[paramKey])" />
       </span>
 
       <!-- String -->
-      <emqx-input
+      <el-input
         v-else-if="paramInfo.type === TypeOfPluginParam.String"
         v-model.trim="inputValue"
         :placeholder="String(defaultData[paramKey])"
       />
       <!-- Boolean -->
-      <emqx-radio-group v-else-if="paramInfo.type === TypeOfPluginParam.Boolean" v-model="inputValue">
-        <emqx-radio :label="true">True</emqx-radio>
-        <emqx-radio :label="false">False</emqx-radio>
-      </emqx-radio-group>
+      <el-radio-group v-else-if="paramInfo.type === TypeOfPluginParam.Boolean" v-model="inputValue">
+        <el-radio :label="true">True</el-radio>
+        <el-radio :label="false">False</el-radio>
+      </el-radio-group>
       <!-- File -->
       <div class="file-param" v-else-if="paramInfo.type === TypeOfPluginParam.File">
-        <emqx-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
-          <emqx-button size="mini">{{ t('common.uploadFile') }}</emqx-button>
-        </emqx-upload>
-        <emqx-button v-if="inputValue" size="mini" @click="clearFile" type="text">
+        <el-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
+          <el-button size="mini">{{ t('common.uploadFile') }}</el-button>
+        </el-upload>
+        <el-button v-if="inputValue" size="mini" @click="clearFile" type="text">
           {{ t('config.clearUploadedFile') }}
-        </emqx-button>
+        </el-button>
         <div class="file-content-preview" v-if="inputValue">
           <label>Content-MD5:</label>
           <span>{{ fileContentPreview(inputValue) }}</span>
         </div>
       </div>
       <!-- Enum -->
-      <!-- <emqx-select v-else-if="paramInfo.type === TypeOfPluginParam.Enum">
-        <emqx-option />
-      </emqx-select>-->
+      <!-- <el-select v-else-if="paramInfo.type === TypeOfPluginParam.Enum">
+        <el-option />
+      </el-select>-->
       <!-- Map -->
       <template v-else-if="paramInfo.type === TypeOfPluginParam.Map">
-        <emqx-radio-group v-if="paramInfo.valid.map.length < 3" v-model="inputValue">
-          <emqx-radio v-for="{ key, value } in paramInfo.valid.map" :key="value" :label="value">
+        <el-radio-group v-if="paramInfo.valid.map.length < 3" v-model="inputValue">
+          <el-radio v-for="{ key, value } in paramInfo.valid.map" :key="value" :label="value">
             {{ upperFirstLetter(key) }}
-          </emqx-radio>
-        </emqx-radio-group>
-        <emqx-select v-else v-model="inputValue" :placeholder="$t('common.pleaseSelect')">
-          <emqx-option
+          </el-radio>
+        </el-radio-group>
+        <el-select v-else v-model="inputValue" :placeholder="$t('common.pleaseSelect')">
+          <el-option
             v-for="{ key, value } in paramInfo.valid.map"
             :key="value"
             :value="value"
             :label="upperFirstLetter(key)"
           />
-        </emqx-select>
+        </el-select>
       </template>
       <template v-else-if="paramInfo.type === TypeOfPluginParam.Array">
         <DynamicTable
@@ -78,8 +78,8 @@
           @validateFileds="validateFileds"
         />
       </template>
-    </emqx-form-item>
-  </emqx-col>
+    </el-form-item>
+  </el-col>
 </template>
 
 <script lang="ts" setup>

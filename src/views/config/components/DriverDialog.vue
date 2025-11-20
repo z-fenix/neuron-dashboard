@@ -1,20 +1,20 @@
 <template>
   <el-dialog v-model="showDialog" :width="500" custom-class="common-dialog" :title="dialogTitle" :z-index="2000">
-    <emqx-form ref="formCom" :model="driverForm" :rules="groupFormRules">
-      <emqx-form-item prop="name" :label="$t('common.name')" required>
-        <emqx-input v-model.trim="driverForm.name" :disabled="driver" />
-      </emqx-form-item>
+    <el-form ref="formCom" :model="driverForm" :rules="groupFormRules" label-position="top">
+      <el-form-item prop="name" :label="$t('common.name')" required>
+        <el-input v-model.trim="driverForm.name" :disabled="driver" />
+      </el-form-item>
 
       <!-- 1. Supports dual modes: plug-in and template  -->
-      <emqx-form-item v-if="isDualMode" :label="$t('config.addDriverMode')">
-        <emqx-radio-group v-model="activeDriverMode" class="mode-radio-group" @change="changeMode">
-          <emqx-radio :label="addDriverModes[0]">{{ $t('config.pluginMode') }}</emqx-radio>
-          <emqx-radio :label="addDriverModes[1]">{{ $t('config.templateMode') }}</emqx-radio>
-        </emqx-radio-group>
-      </emqx-form-item>
+      <el-form-item v-if="isDualMode" :label="$t('config.addDriverMode')">
+        <el-radio-group v-model="activeDriverMode" class="mode-radio-group" @change="changeMode">
+          <el-radio :label="addDriverModes[0]">{{ $t('config.pluginMode') }}</el-radio>
+          <el-radio :label="addDriverModes[1]">{{ $t('config.templateMode') }}</el-radio>
+        </el-radio-group>
+      </el-form-item>
 
       <!--  Plugin mode-->
-      <emqx-form-item v-if="activeDriverMode === addDriverModes[0]" prop="plugin" :label="$t('config.plugin')" required>
+      <el-form-item v-if="activeDriverMode === addDriverModes[0]" prop="plugin" :label="$t('config.plugin')" required>
         <PluginListSelector
           v-model="driverForm.plugin"
           :type="type"
@@ -22,24 +22,24 @@
           width="100%"
           :placeholder="$t('config.selectPlugin')"
         />
-      </emqx-form-item>
+      </el-form-item>
 
       <!-- Template mode -->
-      <emqx-form-item
+      <el-form-item
         v-if="activeDriverMode === addDriverModes[1]"
         prop="template"
         :label="$t('config.templateMode')"
         required
       >
         <TemplateListSelector v-model="driverForm.template" :disabled="!!driver" width="100%" />
-      </emqx-form-item>
-    </emqx-form>
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">
           {{ $t('common.create') }}
-        </emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        </el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -98,7 +98,7 @@ const showDialog = computed({
 
 watch(showDialog, (val) => {
   nextTick(() => {
-    formCom.value.form.clearValidate()
+    formCom.value.form?.clearValidate()
   })
   if (!val) {
     initForm()

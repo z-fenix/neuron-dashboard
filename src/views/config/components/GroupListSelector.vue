@@ -1,5 +1,5 @@
 <template>
-  <emqx-select
+  <el-select
     v-model="group"
     clearable
     :size="size"
@@ -8,8 +8,8 @@
     :disabled="disabled"
     @change="changeGroup"
   >
-    <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
-  </emqx-select>
+    <el-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
+  </el-select>
 </template>
 
 <script lang="ts" setup>

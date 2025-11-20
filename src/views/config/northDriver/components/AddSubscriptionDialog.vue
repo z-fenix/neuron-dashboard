@@ -8,46 +8,46 @@
   >
     <el-alert v-if="topicWarning" :title="topicWarning" type="warning" show-icon :closable="false" />
 
-    <emqx-form ref="formCom" :model="subscriptionForm" :rules="rules">
+    <el-form ref="formCom" :model="subscriptionForm" label-position="top" :rules="rules">
       <section v-if="!isSupportBatchSub">
-        <emqx-form-item prop="driver" :label="$t('config.southDevice')">
-          <emqx-select
+        <el-form-item prop="driver" :label="$t('config.southDevice')">
+          <el-select
             v-model="subscriptionForm.driver"
             filterable
             :placeholder="$t('common.pleaseSelect')"
             @change="selectedNodeChanged"
           >
-            <emqx-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
-          </emqx-select>
-        </emqx-form-item>
-        <emqx-form-item prop="group" :label="$t('config.group')">
-          <emqx-select v-model="subscriptionForm.group" filterable :placeholder="$t('common.pleaseSelect')">
-            <emqx-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
-          </emqx-select>
-        </emqx-form-item>
+            <el-option v-for="{ name } in deviceList" :key="name" :value="name" :label="name" />
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="group" :label="$t('config.group')">
+          <el-select v-model="subscriptionForm.group" filterable :placeholder="$t('common.pleaseSelect')">
+            <el-option v-for="{ name } in groupList" :key="name" :value="name" :label="name" />
+          </el-select>
+        </el-form-item>
       </section>
 
       <!-- mqtt -->
-      <emqx-form-item v-if="isMQTTPugin" prop="topic" :label="$t('config.topic')">
-        <emqx-input v-model="subscriptionForm.topic" />
-      </emqx-form-item>
+      <el-form-item v-if="isMQTTPugin" prop="topic" :label="$t('config.topic')">
+        <el-input v-model="subscriptionForm.topic" />
+      </el-form-item>
 
       <!-- gewu -->
-      <emqx-form-item v-if="isGewuPugin" prop="productKey" label="productKey">
-        <emqx-input v-model="subscriptionForm.productKey" />
-      </emqx-form-item>
+      <el-form-item v-if="isGewuPugin" prop="productKey" label="productKey">
+        <el-input v-model="subscriptionForm.productKey" />
+      </el-form-item>
 
-      <emqx-form-item v-if="isSupportBatchSub" prop="driverGroups" :label="$t('config.subscribeSouthDriverData')">
+      <el-form-item v-if="isSupportBatchSub" prop="driverGroups" :label="$t('config.subscribeSouthDriverData')">
         <SouthGroupsCheckbox v-model="subscriptionForm.driverGroups" />
-      </emqx-form-item>
-    </emqx-form>
+      </el-form-item>
+    </el-form>
 
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">
           {{ $t('common.submit') }}
-        </emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        </el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -104,7 +104,7 @@ watch(showDialog, (val) => {
   if (val) {
     initForm()
   } else {
-    formCom.value.resetField()
+    formCom.value?.resetFields()
     groupList.value = []
   }
 })

@@ -1,5 +1,5 @@
 <template>
-  <emqx-card v-emqx-loading="isListLoading">
+  <el-card v-loading="isListLoading">
     <ViewHeaderBar class="tempalte-remark">
       <template v-slot:left>
         <span class="header-item">{{ $t('template.templateRemark') }}</span>
@@ -15,51 +15,50 @@
 
     <ViewHeaderBar>
       <template v-slot:left>
-        <emqx-button
+        <el-button
           type="primary"
-          size="small"
-          icon="iconfont iconcreate"
+          :icon="Plus"
           class="header-item btn"
           @click="showTemplateDialog"
         >
           {{ $t('template.addTemplate') }}
-        </emqx-button>
+        </el-button>
       </template>
       <template v-slot:right>
-        <emqx-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
-          <emqx-upload
+        <el-dropdown :hide-timeout="512" popper-class="btn-download-temp-popper">
+          <el-upload
             action=""
             :before-upload="importFile"
             :show-file-list="false"
             :accept="'application/json'"
             class="uploader"
           >
-            <emqx-button size="small" class="header-item btn">
+            <el-button size="small" class="header-item btn">
               <i class="iconfont icon-import icondownload"></i>
               <span>{{ $t('template.importTemplate') }}</span>
-            </emqx-button>
-          </emqx-upload>
-        </emqx-dropdown>
+            </el-button>
+          </el-upload>
+        </el-dropdown>
       </template>
     </ViewHeaderBar>
 
-    <emqx-empty v-if="!isListLoading && templateList.length === 0" class="empty" />
-    <emqx-table
+    <el-empty v-if="!isListLoading && templateList.length === 0" class="empty" />
+    <el-table
       v-else
       :data="templateList"
       :empty-text="$t('common.emptyData')"
       :row-class-name="'table-row-click'"
       @row-click="goGroupPage"
     >
-      <emqx-table-column :label="$t('common.name')" prop="name" show-overflow-tooltip>
+      <el-table-column :label="$t('common.name')" prop="name" show-overflow-tooltip>
         <template #default="{ row }">
           <el-link type="primary" :underline="false" href="javascript:;" @click="goGroupPage(row)">
             {{ row.name }}
           </el-link>
         </template>
-      </emqx-table-column>
-      <emqx-table-column :label="$t('config.plugin')" prop="plugin" />
-      <emqx-table-column align="left" :label="$t('common.oper')" width="220px">
+      </el-table-column>
+      <el-table-column :label="$t('config.plugin')" prop="plugin" />
+      <el-table-column align="left" :label="$t('common.oper')" width="220px">
         <template #default="{ row }">
           <div class="operator-wrap">
             <!-- TODO -->
@@ -74,9 +73,9 @@
             </AComWithDesc>
           </div>
         </template>
-      </emqx-table-column>
-    </emqx-table>
-  </emqx-card>
+      </el-table-column>
+    </el-table>
+  </el-card>
 
   <!-- add | edit | import -->
   <TemplateDialog
@@ -95,7 +94,7 @@ import AComWithDesc from '@/components/AComWithDesc.vue'
 import ViewHeaderBar from '@/components/ViewHeaderBar.vue'
 import useTemplateList from '@/composables/config/useTemplateList'
 import TemplateDialog from './components/TemplateDialog.vue'
-
+import { Plus } from '@element-plus/icons-vue'
 const {
   templateList,
   isListLoading,

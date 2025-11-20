@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import { exportExcelData } from '@/utils/utils'
 import { useTagTypeSelect, useTagAttributeTypeSelect } from './useAddTagCommon'
@@ -33,7 +33,7 @@ export default () => {
   // const exportTable = async (tagList: Array<TagData>, groupName: string, nodeName: string) => {
   const exportTable = async (tagList: Array<TagData>, nodeName: string) => {
     if (tagList.length === 0) {
-      EmqxMessage.warning(t('common.emptyData'))
+      ElMessage.warning(t('common.emptyData'))
       return
     }
     isExporting.value = true
@@ -42,7 +42,7 @@ export default () => {
     try {
       await exportExcelData(data, `${nodeName} tags`)
     } catch (error: any) {
-      EmqxMessage.error(error.toString())
+      ElMessage.error(error.toString())
     } finally {
       isExporting.value = false
     }

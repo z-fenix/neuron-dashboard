@@ -1,5 +1,5 @@
 <template>
-  <emqx-card class="data-monitoring">
+  <el-card class="data-monitoring">
     <ViewHeaderBar>
       <template v-slot:left>
         <span v-if="currentGroup.groupName" class="header-item">
@@ -9,29 +9,29 @@
       </template>
 
       <template v-slot:right>
-        <emqx-select
+        <el-select
           v-model="currentGroup.node"
-          size="medium"
+          size="large"
           filterable
           clearable
           class="header-item search-group filter-selector"
           :placeholder="$t('config.southDevicePlaceholder')"
           @change="selectedNodeChanged"
         >
-          <emqx-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
-        </emqx-select>
+          <el-option v-for="{ name } in nodeList" :key="name" :value="name" :label="name" />
+        </el-select>
 
-        <emqx-select
+        <el-select
           v-model="currentGroup.groupName"
+          size="large"
           filterable
           clearable
-          size="medium"
           class="header-item search-group filter-selector"
           :placeholder="$t('config.groupPlaceholder')"
           @change="selectedGroupChanged"
         >
-          <emqx-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
-        </emqx-select>
+          <el-option v-for="item in groupList" :key="item.name" :value="item.name" :label="item.name" />
+        </el-select>
         <KeywordSerachInput
           v-model="keywordSearch"
           class="header-item search_input"
@@ -43,26 +43,26 @@
     </ViewHeaderBar>
 
     <div class="table-container">
-      <emqx-table :data="tableData" :empty-text="tableEmptyText" @sort-change="sortDataByKey">
-        <emqx-table-column
+      <el-table :data="tableData" :empty-text="tableEmptyText" @sort-change="sortDataByKey">
+        <el-table-column
           prop="tagName"
           :label="$t('common.name')"
           sortable="custom"
           min-width="100"
-        ></emqx-table-column>
-        <emqx-table-column
+        ></el-table-column>
+        <el-table-column
           prop="address"
           :label="$t('config.address')"
           sortable="custom"
           min-width="100"
-        ></emqx-table-column>
-        <emqx-table-column :label="$t('common.type')" width="90" sortable="custom" prop="typeLabel">
+        ></el-table-column>
+        <el-table-column :label="$t('common.type')" width="90" sortable="custom" prop="typeLabel">
           <template #default="{ row }">{{ row.typeLabel }}</template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('config.decimal')">
+        </el-table-column>
+        <el-table-column :label="$t('config.decimal')">
           <template #default="{ row }">{{ tagDecimalValue(row.decimal) }}</template>
-        </emqx-table-column>
-        <emqx-table-column prop="valueToShow" min-width="100">
+        </el-table-column>
+        <el-table-column prop="valueToShow" min-width="100">
           <template #header>
             <div class="value-column-hd">
               <span>{{ $t('data.value') }}</span>
@@ -71,8 +71,8 @@
                   <i class="iconfont iconalarm" />
                 </template>
                 <label class="hexadecimal-label">{{ $t('data.displayTheValueInHexadecimal') }}</label>
-                <emqx-switch
-                  size="mini"
+                <el-switch
+                  size="small"
                   v-model="showValueByHexadecimal"
                   @change="handleShowValueByHexadecimalChanged"
                 />
@@ -83,17 +83,17 @@
             <span v-if="!row.error">{{ row.valueToShow }}</span>
             <span v-else class="has-error"> Error({{ row.error }}): {{ getErrorMsg(row.error) }} </span>
           </template>
-        </emqx-table-column>
-        <emqx-table-column :label="$t('config.desc')" prop="description" min-width="100" />
+        </el-table-column>
+        <el-table-column :label="$t('config.desc')" prop="description" min-width="100" />
 
-        <emqx-table-column width="100" :label="$t('common.oper')" align="right">
+        <el-table-column width="100" :label="$t('common.oper')" align="right">
           <template #default="{ row }">
-            <emqx-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</emqx-button>
+            <el-button type="text" @click="writeData(row)" v-if="canWrite(row)">Write</el-button>
           </template>
-        </emqx-table-column>
-      </emqx-table>
+        </el-table-column>
+      </el-table>
     </div>
-    <emqx-pagination
+    <el-pagination
       v-if="pageController.total > 100"
       layout="total, sizes, prev, pager, next, jumper"
       v-model:current-page="pageController.num"
@@ -102,7 +102,7 @@
       :page-size="pageController.size"
       @size-change="handleSizeChange"
     />
-  </emqx-card>
+  </el-card>
   <WriteDialog
     v-model="showWriteDialog"
     :group="currentGroup.groupName"
@@ -174,7 +174,7 @@ const { tagDecimalValue } = useTagDecimal()
   .table-container {
     margin-bottom: 24px;
   }
-  .emqx-pagination {
+  .el-pagination {
     text-align: right;
   }
   .value-column-hd {

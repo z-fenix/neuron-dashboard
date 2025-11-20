@@ -2,7 +2,7 @@ import type { Ref } from 'vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { addTag } from '@/api/template'
 import type { PluginInfo, TagFormItem, AddTagListForm } from '@/types/config'
 import type TagFormCom from '@/views/config/southDriver/components/TagForm.vue'
@@ -57,7 +57,7 @@ export default () => {
       return
     }
 
-    EmqxMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
+    ElMessage.error(t('config.tagPartAddedFailedPopup', [getErrorMsg(errorNum)]))
     formData.value.tagList = sliceTagList(formData.value.tagList, errIndex)
   }
 
@@ -91,7 +91,7 @@ export default () => {
       isSubmitting.value = true
       await validateTagForm()
       await addTags()
-      EmqxMessage.success(t('common.createSuccess'))
+      ElMessage.success(t('common.createSuccess'))
       router.push({
         name: 'TemplateGroupTag',
       })

@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios'
 import axios from 'axios'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import router from '@/router/'
 import store from '@/store/index'
 import { LOGIN_ROUTE_NAME, CHANGE_PW_ROUTE_NAME } from '@/router/routes'
@@ -27,7 +27,7 @@ export const handleBlobError = async (
   compatibleErrorCodes?: CompatibleErrorCode,
 ) => {
   const { statusText, status } = statusInfo
-  const statusMsg = statusText || status
+  const statusMsg = statusText
 
   const reader = new FileReader()
   reader.readAsText(data, 'utf-8')
@@ -42,55 +42,65 @@ export const handleBlobError = async (
           if (errorNumber) {
             popUpErrorMessage(errorNumber, compatibleErrorCodes)
           } else {
-            EmqxMessage.error(statusMsg)
+            ElMessage.error(statusMsg)
           }
         })
         .catch(() => {
-          EmqxMessage.error(statusMsg)
+          ElMessage.error(statusMsg)
         })
     } else {
-      EmqxMessage.error(statusMsg)
+      ElMessage.error(statusMsg)
     }
   }
 }
 
 export const handleError = (error: AxiosError) => {
   const { response, message, config } = error
-  const { _compatibleErrorCode, name } = (config as any) || {}
+  const customConfig = config as any
+  const { _compatibleErrorCode, name } = customConfig || {}
   const errorParams = { compatibleErrorCode: !!_compatibleErrorCode, name }
 
-  if (response?.data?.error) {
-    popUpErrorMessage(response.data.error, errorParams)
-  } else if (response?.data) {
-    const { statusText, status } = response.data
+  if (!response) {
+    ElMessage.error(message || 'Unknown error')
+    return
+  }
 
-    const newStatusText = statusText || response?.statusText || message
-    const newStatus = status || response?.status
+  const { data } = response
 
-    if (dataType(response.data) === 'blob') {
-      handleBlobError(response.data, { statusText: newStatusText, status: newStatus }, errorParams)
-    } else {
-      const msg = newStatusText || message || newStatus
-      EmqxMessage.error(msg)
-    }
+  // 处理 Blob 数据
+  if (data instanceof Blob || dataType(data) === 'blob') {
+    handleBlobError(data as Blob, {
+      statusText: response.statusText,
+      status: response.status
+    }, errorParams)
+    return
+  }
+
+  // 使用类型断言处理普通数据
+  const errorData = data as any
+
+  if (errorData?.error) {
+    popUpErrorMessage(errorData.error, errorParams)
   } else {
-    // void timeout
-    const msg = response?.statusText || message || response?.status || 'unknow'
-    EmqxMessage.error(msg)
+    const statusText = errorData?.statusText || response.statusText || message
+    const status = errorData?.status || response.status
+    const msg = statusText || message || String(status) || 'Unknown error'
+    ElMessage.error(msg)
   }
 }
-
 const { CancelToken } = axios
+
 axios.interceptors.request.use(
   (config) => {
     if (store.state.token) {
-      config.headers = {
-        ...config.headers,
-        Authorization: `Bearer ${store.state.token}`,
+      // 使用 AxiosHeaders 的方法来设置 header
+      if (!config.headers) {
+        config.headers = new axios.AxiosHeaders()
       }
+      config.headers.set('Authorization', `Bearer ${store.state.token}`)
     }
 
-    config.cancelToken = new CancelToken((cancel: any) => {
+    config.cancelToken = new axios.CancelToken((cancel: any) => {
       store.commit('ADD_AXIOS_PROMISE_CANCEL', cancel)
     })
 
@@ -98,7 +108,6 @@ axios.interceptors.request.use(
   },
   (error) => Promise.reject(error),
 )
-
 axios.interceptors.response.use(
   (response) => {
     const { status, data, config } = response

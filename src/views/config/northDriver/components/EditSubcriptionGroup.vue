@@ -6,8 +6,8 @@
     :title="$t(`${dialogTitle}`)"
     :z-index="2000"
   >
-    <emqx-form ref="formRef" :model="groupForm" :rules="rules">
-      <emqx-form-item prop="driver" :label="$t('config.southDevice')" required>
+    <el-form ref="formRef" :model="groupForm" label-position="top" :rules="rules">
+      <el-form-item prop="driver" :label="$t('config.southDevice')" required>
         <DriverListSelector
           v-model.trim="groupForm.driver"
           :type="DriverDirection.South"
@@ -15,30 +15,30 @@
           disabled
           @change="changeDriver"
         />
-      </emqx-form-item>
-      <emqx-form-item prop="group" :label="$t('config.group')" required>
+      </el-form-item>
+      <el-form-item prop="group" :label="$t('config.group')" required>
         <GroupListSelector v-model="groupForm.group" :driver="groupForm.driver" :width="'100%'" disabled />
-      </emqx-form-item>
+      </el-form-item>
 
       <!-- mqtt -->
-      <emqx-form-item v-if="isMQTTPugin" prop="params.topic" :label="$t('config.topic')">
-        <emqx-input v-model="groupForm.params.topic" />
-      </emqx-form-item>
+      <el-form-item v-if="isMQTTPugin" prop="params.topic" :label="$t('config.topic')">
+        <el-input v-model="groupForm.params.topic" />
+      </el-form-item>
 
       <!-- gewu -->
-      <emqx-form-item v-if="isGewuPugin" prop="params.productKey" label="productKey">
-        <emqx-input v-model="groupForm.params.productKey" />
-      </emqx-form-item>
-    </emqx-form>
+      <el-form-item v-if="isGewuPugin" prop="params.productKey" label="productKey">
+        <el-input v-model="groupForm.params.productKey" />
+      </el-form-item>
+    </el-form>
 
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" :loading="isSubmitting" @click="submit">
+        <el-button type="primary" size="small" :loading="isSubmitting" @click="submit">
           {{ $t(`${confirmBtnText}`) }}
-        </emqx-button>
-        <emqx-button size="small" @click="close">
+        </el-button>
+        <el-button size="small" @click="close">
           {{ $t('common.cancel') }}
-        </emqx-button>
+        </el-button>
       </span>
     </template>
   </el-dialog>
@@ -71,7 +71,7 @@ const props = defineProps({
   modelValue: {
     type: Object as PropType<SubscriptionData>,
     default: () => {
-      return { group: '', interval: null }
+      return { group: '', interval: null ,params:{}}
     },
   },
   dialogVisible: {
@@ -111,7 +111,7 @@ const showDialog = computed({
 
 watch(showDialog, async (val) => {
   nextTick(() => {
-    formRef.value.form.clearValidate()
+    formRef.value.form?.clearValidate()
   })
   if (!val) {
     resetFields()
@@ -126,7 +126,7 @@ const changeDriver = (driver: string) => {
 }
 
 const resetFields = () => {
-  formRef.value.form.resetFields()
+  formRef.value.form?.resetFields()
 }
 const initForm = () => {
   groupForm.value = createRawForm()
@@ -141,7 +141,7 @@ const submit = async () => {
   //     interval,
   //   }
   // }
-  await formRef.value.validate()
+  await formRef.value?.validate()
   emit('submitted', groupForm.value)
 }
 const close = () => {

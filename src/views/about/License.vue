@@ -1,59 +1,59 @@
 <template>
-  <emqx-card v-emqx-loading="isDataLoading">
+  <el-card v-loading="isDataLoading">
     <div class="card-hd-with-btn">
       <h3 class="card-title">{{ $t('admin.license') }}</h3>
     </div>
     <div class="license">
-      <emqx-descriptions v-if="hasLicense" :column="1">
-        <!-- <emqx-descriptions-item :label="$t('admin.licenseType')">
+      <el-descriptions v-if="hasLicense" :column="1">
+        <!-- <el-descriptions-item :label="$t('admin.licenseType')">
           {{ licenseData.license_type }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.licenseStatus')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.licenseStatus')">
           {{ licenseStatus }}
-        </emqx-descriptions-item> -->
-        <!-- <emqx-descriptions-item :label="$t('admin.object')"> -->
-        <emqx-descriptions-item :label="$t('admin.object')">
+        </el-descriptions-item> -->
+        <!-- <el-descriptions-item :label="$t('admin.object')"> -->
+        <el-descriptions-item :label="$t('admin.object')">
           {{ licenseData.object }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.nodeUsage')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.nodeUsage')">
           <el-progress :stroke-width="14" :percentage="licenseData.nodesUsage" status="success" class="progress-bar">
             <span class="progress-text">{{ licenseData.used_nodes }} / {{ licenseData.max_nodes }}</span>
           </el-progress>
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.tagUsage')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.tagUsage')">
           <el-progress :stroke-width="14" :percentage="licenseData.tagsUsage" status="success" class="progress-bar">
             <span class="progress-text">{{ licenseData.used_tags }} / {{ licenseData.max_node_tags }}</span>
           </el-progress>
-        </emqx-descriptions-item>
+        </el-descriptions-item>
 
-        <!-- <emqx-descriptions-item :label="$t('admin.maxNodes')">
+        <!-- <el-descriptions-item :label="$t('admin.maxNodes')">
           {{ licenseData.max_nodes }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.usedNodes')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.usedNodes')">
           {{ licenseData.used_nodes }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.maxNodeTags')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.maxNodeTags')">
           {{ licenseData.max_node_tags }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.usedTags')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.usedTags')">
           {{ licenseData.used_tags }}
-        </emqx-descriptions-item> -->
-        <emqx-descriptions-item :label="$t('admin.emailAddress')">
+        </el-descriptions-item> -->
+        <el-descriptions-item :label="$t('admin.emailAddress')">
           {{ licenseData.email_address }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.effectiveDate')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.effectiveDate')">
           {{ licenseData.valid_since }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.expireDate')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.expireDate')">
           {{ licenseData.valid_until }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.enabledPlugins')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.enabledPlugins')">
           {{ pluginsStr }}
-        </emqx-descriptions-item>
-        <emqx-descriptions-item :label="$t('admin.hardwareToken')">
+        </el-descriptions-item>
+        <el-descriptions-item :label="$t('admin.hardwareToken')">
           {{ licenseData.hardware_token || '-' }}
-        </emqx-descriptions-item>
-      </emqx-descriptions>
+        </el-descriptions-item>
+      </el-descriptions>
       <div class="msg" :class="{ 'align-center': !hasLicense }">
         <img v-if="!hasLicense" :src="require('@/assets/images/license.png')" width="400" />
         <div class="method-text">
@@ -71,14 +71,14 @@
             </i18n-t>
           </p>
         </div>
-        <emqx-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
-          <emqx-button size="small" type="primary" class="btn-upload">
+        <el-upload action="" class="file-upload" :show-file-list="false" :before-upload="handleUpload">
+          <el-button size="small" type="primary" class="btn-upload">
             {{ hasLicense ? t('common.reUpload') : t('common.upload') }}
-          </emqx-button>
-        </emqx-upload>
+          </el-button>
+        </el-upload>
       </div>
     </div>
-  </emqx-card>
+  </el-card>
 </template>
 
 <script setup lang="ts">
@@ -88,13 +88,13 @@ import { ElProgress } from 'element-plus'
 import type { License } from '@/types/admin'
 import { queryLicense, uploadLicense } from '@/api/admin'
 import useUploadFileAndRead from '@/composables/config/useUploadFileAndRead'
-import { EmqxMessage } from '@emqx/emqx-ui'
+import { ElMessage } from 'element-plus'
 import { useI18n } from 'vue-i18n'
 import useLang from '@/composables/useLang'
 
 const { t, locale } = useI18n()
 const isDataLoading = ref(false)
-const licenseData: Ref<License | undefined> = ref(undefined)
+const licenseData: Ref<License | any> = ref(undefined)
 
 const { currentLang } = useLang()
 
@@ -161,13 +161,13 @@ const handleUpload = async (file: any) => {
   const nameStrings = file.name.split('.')
   const type = nameStrings[nameStrings.length - 1]
   if (type !== 'lic') {
-    EmqxMessage.warning(t('admin.uploadFileTypeError'))
+    ElMessage.warning(t('admin.uploadFileTypeError'))
     return false
   }
   try {
     const content: string = (await readFile(file)) as string
     await uploadLicense(content)
-    EmqxMessage.success(t('admin.uploadSuccessful'))
+    ElMessage.success(t('admin.uploadSuccessful'))
     getLicense()
   } catch (error) {
     console.error(error)

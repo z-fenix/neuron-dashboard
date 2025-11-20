@@ -6,17 +6,17 @@
     :title="`${$t('config.addPlugin')}`"
     :z-index="2000"
   >
-    <emqx-form ref="pluginFormCom" :model="pluginForm" :rules="pluginFormRules" @submit.prevent>
-      <emqx-form-item prop="library" :label="$t('config.libName')" required>
-        <emqx-input v-model.trim="pluginForm.library" />
-      </emqx-form-item>
-    </emqx-form>
+    <el-form ref="pluginFormCom" :model="pluginForm" label-position="top" :rules="pluginFormRules" @submit.prevent>
+      <el-form-item prop="library" :label="$t('config.libName')" required>
+        <el-input v-model.trim="pluginForm.library" />
+      </el-form-item>
+    </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <emqx-button type="primary" size="small" @click="submit" :loading="isSubmitting">
+        <el-button type="primary" size="small" @click="submit" :loading="isSubmitting">
           {{ $t('common.create') }}
-        </emqx-button>
-        <emqx-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</emqx-button>
+        </el-button>
+        <el-button size="small" @click="showDialog = false">{{ $t('common.cancel') }}</el-button>
       </span>
     </template>
   </el-dialog>
@@ -46,7 +46,7 @@ watch(showDialog, async (val) => {
   if (val) {
     pluginForm.value = createRawPluginForm()
     await nextTick()
-    pluginFormCom.value.$refs.form.clearValidate()
+    pluginFormCom.value.$refs.form?.clearValidate()
   }
 })
 
